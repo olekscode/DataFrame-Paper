@@ -1,0 +1,106 @@
+%% ***********************************************************
+%% * RMOD Team Latex Macro File
+%% *
+%% * Created on the 27/02/2010 by Jean-Rémy Falleri.
+%% * Contributors:
+%% *   - Jean-Rémy Falleri
+%% *********************************************************** 
+%%
+%% Package header
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{rmodtex}
+\RequirePackage{ifthen}
+\RequirePackage{xspace}
+\RequirePackage{url}
+%%
+%% Options
+%%
+\newboolean{showcomments}
+\setboolean{showcomments}{false}
+\DeclareOption{showcomments}{\setboolean{showcomments}{true}}
+\ProcessOptions\relax
+%%
+%% Package requirements
+%%
+%%
+%% Comment handling
+%%
+%%%% Comment activation or deactivation
+\ifthenelse{\boolean{showcomments}}%
+{\newcommand{\bnote}[2]{\fbox{\bfseries\sffamily\scriptsize#1}{\sf\small$\blacktriangleright$\textit{#2}$\blacktriangleleft$}}}%
+{\newcommand{\bnote}[2]{}}% 
+%%%% Basic comments: TODO and FIXME
+\newcommand{\here}{\bnote{***}{CONTINUE HERE}}
+\newcommand{\nb}[1]{\bnote{NB}{#1}}
+\newcommand{\fix}[1]{\bnote{FIXME}{#1}}
+\newcommand{\todo}[1]{\bnote{TODO}{#1}}
+%%%% Comments for the team guys, don't hesitate to customize you name :D
+\newcommand{\sd}[1]{\bnote{Stef}{#1}}
+\newcommand{\ja}[1]{\bnote{Jannik}{#1}}
+\newcommand{\md}[1]{\bnote{MD}{#1}}
+\newcommand{\dap}[1]{\bnote{DiPole}{#1}}
+\newcommand{\jr}[1]{\bnote{JRe}{#1}}
+\newcommand{\sid}[1]{\bnote{Simon}{#1}}
+\newcommand{\gc}[1]{\bnote{MrGwen}{#1}}
+\newcommand{\jb}[1]{\bnote{DjArnaud}{#1}}
+\newcommand{\na}[1]{\bnote{Nicolas}{#1}}
+%%
+%% Convenience commands
+%% 
+%%%% Reference commands
+\newcommand{\figreftxt}{Figure}
+\newcommand{\figref}[1]{\figreftxt~\ref{fig:#1}}
+\newcommand{\figlabel}[1]{\label{fig:#1}}
+\newcommand{\tabreftxt}{Table}
+\newcommand{\tabref}[1]{\tabreftxt~\ref{tab:#1}}
+\newcommand{\tablabel}[1]{\label{tab:#1}}
+\newcommand{\secreftxt}{Section }
+\newcommand{\secref}[1]{\secreftxt~\ref{sec:#1}}
+\newcommand{\seclabel}[1]{\label{sec:#1}}
+%%%% Text commands
+\newcommand{\layout}[1]{#1}
+\newcommand{\commented}[1]{}
+\newcommand{\stCode}[1]{\textsf{#1}}
+\newcommand{\stMethod}[1]{\textsf{#1}}
+\newcommand{\sep}{\texttt{>>}\xspace}
+\newcommand{\stAssoc}{\texttt{->}\xspace}
+\newcommand{\stBar}{$\mid$}
+\newcommand{\stSelector}{$\gg$}
+\newcommand{\ret}{\^{}}
+\newcommand{\msup}{$>$}
+\newcommand{\myparagraph}[1]{\noindent\textbf{#1.}}
+\newcommand{\eg}{\emph{e.g.,}\xspace}
+\newcommand{\ie}{\emph{i.e.,}\xspace}
+\newcommand{\ct}[1]{{\textsf{#1}}\xspace}
+\newenvironment{code}{\begin{alltt}\sffamily}{\end{alltt}\normalsize}
+\newcommand{\defaultScale}{0.55}
+\newcommand{\pic}[3]{
+   \begin{figure}[h]
+   \begin{center}
+   \includegraphics[scale=\defaultScale]{#1}
+   \caption{#2}
+   \label{#3}
+   \end{center}
+   \end{figure}
+}
+\newcommand{\twocolumnpic}[3]{
+   \begin{figure*}[!ht]
+   \begin{center}
+   \includegraphics[scale=\defaultScale]{#1}
+   \caption{#2}
+   \label{#3}
+   \end{center}
+   \end{figure*}
+}
+\newcommand{\infe}{$<$}
+\newcommand{\supe}{$\rightarrow$\xspace}
+\newcommand{\di}{$\gg$\xspace}
+\newcommand{\adhoc}{\textit{ad-hoc}\xspace}
+%%
+%% Change classic URL style
+%%
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\sffamily}}}
+\makeatother
+\urlstyle{leo}
