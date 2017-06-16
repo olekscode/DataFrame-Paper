@@ -25,6 +25,8 @@
 
 \input{macros}
 
+\setlength\parindent{0pt}
+
 \title{Exploratory Data Analysis in Pharo}
 \author{
   Oleksandr Zaytsev\\
@@ -41,58 +43,62 @@
 %\maketitle
 
 \begin{abstract}
-In this context...
-We consider this problem P...
-P is a problem because...
-We propose this solution...
-Our solution solves P in such and such way.
+% In this context...
+% We consider this problem P...
+% P is a problem because...
+% We propose this solution...
+% Our solution solves P in such and such way.
 
-Pharo does not have the proper tools for data analysis. One of the most important tools is data frames - tabular data structures for data analysis. In this paper I demonstrate how the existing DataFrame can already be used for exploratory data analysis.
+\noindent The simplicity and power of Smalltalk combined with a live environment provided by Pharo make up a perfect environment for data analysis. The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm. Provided the proper tools and the open source libraries for machine learning, statistics, and optimization, Pharo can become both powerful tool for professional data analysts, and a simple environment for everyone who wants to play with a data set. Many important tools and algorithms are already implemented in PolyMath. But the essential part of data analysis toolkit is missing - the specialized data structures for structured data sets with a simple and powerful API for summarizing, cleaning, and manipulating the data. In this paper I introduce \texttt{DataFrame} and \texttt{DataSeries} - the new collections specifically designed for working with structured data. I demonstrate how these tools can be used for descriptive statistics and the exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis.
 \end{abstract}
 
 
 \section{Introduction}
 \label{sec:intro}
 
-Context
-
-Problem
+% Context
+%
+% Problem
+%
+% Known tracks for \sd{solutions}
+% 	here you want to show that you are not an idiot not knowing what have been around
+%
+% What our solution is \ct{Set} and \ct{OrderedCollection} (so that the reader knows where the paper is going)
+%
+% Contribution of the paper
 
 Explanatory data analysis is the ...
 
-Known tracks for \sd{solutions}
-	here you want to show that you are not an idiot not knowing what have been around
-
-What our solution is \ct{Set} and \ct{OrderedCollection} (so that the reader knows where the paper is going)
-
-Contribution of the paper
+All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in section \
 
 \paragraph{Paper structure} In the first section I provide a brief introduction into the explanatory data analysis. What is it good for? How to do it right? I will also provide you with all the basic knowledge about statistics and data analysis, such as statistical variable, types of variables etc. In the second section I briefly describe the DataFrame - new data structure for data analysis. In the following section I will give a step-by-step example of how to perform EDA on the well-known Iris data set.
 
 
 
 
-\section{Problem Description}
-\label{sec:problem}
+% \section{Problem Description}
+% \label{sec:problem}
 
-Context, exposed with the \textbf{most precise terms possible} (don't open
-unwanted doors for the reader)
+% Context, exposed with the \textbf{most precise terms possible} (don't open
+% unwanted doors for the reader)
+%
+% Probably set the vocabulary before to cut any misinterpretation
+%
+% Constraints that influenced the solution (because the solution is not
+% universal) \emph{e.g.} our requirements for a solution, possibly not all
+% satisfied. They should be sound and believable. Analysis of the criteria.
+% Imagine that you are another guy having this problem do the constraint
+% matches yours so that you could apply the solution
+%
+% Problem
+%
+% Factual solution tracks, to position...
+% Our solution in a nutshell.
 
-Probably set the vocabulary before to cut any misinterpretation
-
-Constraints that influenced the solution (because the solution is not
-universal) \emph{e.g.} our requirements for a solution, possibly not all
-satisfied. They should be sound and believable. Analysis of the criteria.
-Imagine that you are another guy having this problem do the constraint
-matches yours so that you could apply the solution
-
-Problem
-
-Factual solution tracks, to position...
-Our solution in a nutshell.
-
-\section{Exploratory Data Analysis (EDA)}
+\section{Exploratory Data Analysis}
 \label{sec:eda}
+
+Everything that doesn't include fitting model to a data is an exploratory data analysis.
 
 Here are the main reasons we use EDA:
 \begin{itemize}
@@ -109,7 +115,7 @@ Here are the main reasons we use EDA:
 ...
 
 %\section{Proposed Solution}%
-\section{Exploring Iris Data Set}
+\section{Exploring the Iris Data Set}
 \label{sec:contribution}
 
 Free form, variable number of sections, technical details.
@@ -120,6 +126,12 @@ let that for discussion
 We can start by loading iris data set from a CSV file.
 \begin{code}{}
 data := DataFrame fromCsv: '/path/to/iris.csv'.
+\end{code}
+
+DataFrame comes with a built-in collection of data sets that are widely used as examples for data analysis and machine learning problems. Iris is among them, so an alternative way of loading it would be simply
+
+\begin{code}{}
+data := DataFrame loadIris.
 \end{code}
 
 Now let's take a look at the first and the last 5 entries in our table. These slices are called \textit{head} and \textit{tail} of a data frame.
@@ -172,17 +184,21 @@ var barplot.
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.75\linewidth]{boxplot}
-  \caption{no need to put the file extension!}
   \end{center}
 \end{figure}
 
-\begin{figure}[!htp]
+Let's look at the scatterplot of two statistical variables representing the width and length of a sepal. To do that we ask our DataFrame to give us specific columns, in our case, \texttt{sepal\_width} and \texttt{sepal\_length}, then we ask these columns (the result will be another DataFrame) to visualize themselves.
+
+\begin{code}{}
+vars := data columns: #(sepal_width sepal_length).
+vars scatterplot.
+\end{code}
+
+\begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\linewidth]{all_plots}
-  \caption{no need to put the file extension!}
+  \includegraphics[width=0.75\linewidth]{sepal_wl_scatter}
   \end{center}
 \end{figure}
-
 
 \section{Discussion}
 \label{sec:discussion}
