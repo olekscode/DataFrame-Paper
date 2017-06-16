@@ -18,20 +18,27 @@
 \usepackage[pdftex,colorlinks=true,pdfstartview=FitV,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{xspace}
 
+\usepackage{float}
+% \usepackage{xcolor}
+% \usepackage{listings}
+% \usepackage{highlight}
 
 \input{macros}
 
-
+\title{Exploratory Data Analysis in Pharo}
+\author{
+  Oleksandr Zaytsev\\
+  \texttt{olk.zaytsev@gmail.com}
+}
+\date{}
 
 \begin{document}
-\title{Exploratory Data Analysis in Pharo}
 \maketitle
 
-
-\title{Title that Describes the Contribution that Solves a Problem\\}
-\author{Oleksandr Zaytsev}
-\date{\today}
-\maketitle
+%\title{Title that Describes the Contribution that Solves a Problem}
+%\author{Oleksandr Zaytsev}
+%\date{\today}
+%\maketitle
 
 \begin{abstract}
 In this context...
@@ -39,6 +46,8 @@ We consider this problem P...
 P is a problem because...
 We propose this solution...
 Our solution solves P in such and such way.
+
+Pharo does not have the proper tools for data analysis. One of the most important tools is data frames - tabular data structures for data analysis. In this paper I demonstrate how the existing DataFrame can already be used for exploratory data analysis.
 \end{abstract}
 
 
@@ -58,7 +67,7 @@ What our solution is \ct{Set} and \ct{OrderedCollection} (so that the reader kno
 
 Contribution of the paper
 
-Paper structure
+\paragraph{Paper structure} In the first section I provide a brief introduction into the explanatory data analysis. What is it good for? How to do it right? I will also provide you with all the basic knowledge about statistics and data analysis, such as statistical variable, types of variables etc. In the second section I briefly describe the DataFrame - new data structure for data analysis. In the following section I will give a step-by-step example of how to perform EDA on the well-known Iris data set.
 
 
 
@@ -68,16 +77,6 @@ Paper structure
 
 Context, exposed with the \textbf{most precise terms possible} (don't open
 unwanted doors for the reader)
-
-Here are the main reasons we
-use EDA:
-\begin{itemize}
-  \item detection of mistakes
-  \item checking of assumptions
-  \item preliminary selection of appropriate models
-  \item determining relationships among the explanatory variables
-  \item assessing the direction and rough size of relationships between explanatory and outcome variables
-\end{itemize}
 
 Probably set the vocabulary before to cut any misinterpretation
 
@@ -92,14 +91,98 @@ Problem
 Factual solution tracks, to position...
 Our solution in a nutshell.
 
+\section{Exploratory Data Analysis (EDA)}
+\label{sec:eda}
 
-\section{Proposed Solution}
+Here are the main reasons we use EDA:
+\begin{itemize}
+  \item detection of mistakes
+  \item checking of assumptions
+  \item preliminary selection of appropriate models
+  \item determining relationships among the explanatory variables
+  \item assessing the direction and rough size of relationships between explanatory and outcome variables
+\end{itemize}
+
+
+\section{DataFrame class}
+\label{sec:dataframe}
+...
+
+%\section{Proposed Solution}%
+\section{Exploring Iris Data Set}
 \label{sec:contribution}
 
 Free form, variable number of sections, technical details.
 
 But in general do not mix solution and discussions/possible variation
 let that for discussion
+
+We can start by loading iris data set from a CSV file.
+\begin{code}{}
+data := DataFrame fromCsv: '/path/to/iris.csv'.
+\end{code}
+
+Now let's take a look at the first and the last 5 entries in our table. These slices are called \textit{head} and \textit{tail} of a data frame.
+
+\begin{code}{}
+data head.
+data tail.
+\end{code}
+
+\subsection{Univariate non-graphical EDA}
+To access a single variable we ask a data frame for a specific column, using its name or integer index
+
+\begin{code}{}
+var := data column: #sepal_width. "Accessing column by its name"
+var := data columnAt: 1. "Getting column by index"
+\end{code}
+
+What we can do with a column depends on a type of statistical variable it represents. If the variable is categorical, we can ..., if its quantitative, we can look at the ... statistics.
+
+\begin{code}{}
+var min.
+var max.
+var range.
+var average. "a.k.a. mean"
+var median.
+var mode.
+var stdev.
+\end{code}
+
+\subsection{Univariate graphical EDA}
+\subsubsection{Categorical}
+
+Histogram is the only graphical technique that can be used for a categorical variable.
+
+\begin{code}{}
+var := data column: #species.
+var barplot.
+\end{code}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=0.75\linewidth]{species_bar}
+  \end{center}
+\end{figure}
+
+\subsection{Multivariate non-graphical EDA}
+...
+
+\subsection{Multivariate graphical EDA}
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=0.75\linewidth]{boxplot}
+  \caption{no need to put the file extension!}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!htp]
+  \begin{center}
+  \includegraphics[width=\linewidth]{all_plots}
+  \caption{no need to put the file extension!}
+  \end{center}
+\end{figure}
+
 
 \section{Discussion}
 \label{sec:discussion}
@@ -126,24 +209,15 @@ constraints. We proposed solution S. It has such good points and such not so
 good ones. Now we could do this or that.
 
 
-\section*{macro example}
-
-\ct{look at it this is code }
-\begin{code}{}
-Class>>nknkjbkjbkjb
-    \{| grgr | 
-    grgrgrgg 
-    a := 
-\end{code}
-
-
-% \begin{figure}[!htp]
-% \begin{center}
-% \includegraphics[width=0.5\linewidth]{ImageSegmentGCStep0}
-% \caption{no need to put the file extension!}
-% \end{center}
-% \end{figure}
+% \section*{macro example}
 %
+% \ct{look at it this is code }
+% \begin{code}{}
+% Class>>nknkjbkjbkjb
+%     \{| grgr | 
+%     grgrgrgg 
+%     a := 
+% \end{code}
 
 \subsection*{Acknowledgements} This work was supported by Ministry of Higher Education and Research, Nord-Pas de Calais Regional Council, FEDER through the 'Contrat de
 Projets Etat Region (CPER) 2007-2013',  the Cutter ANR project, ANR-10-BLAN-0219 and the MEALS Marie Curie Actions program FP7-PEOPLE-2011-
