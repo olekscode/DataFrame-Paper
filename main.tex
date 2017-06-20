@@ -1,4 +1,5 @@
 \documentclass{article}
+
 \usepackage[T1]{fontenc} %%%key to get copy and paste for the code!
 \usepackage[utf8]{inputenc} %%% to support copy and paste with accents for frnehc stuff
 \usepackage{times}
@@ -22,16 +23,47 @@
 % \usepackage{xcolor}
 % \usepackage{listings}
 % \usepackage{highlight}
+\usepackage{multicol}
+
+\usepackage
+[
+  left=20mm,
+  right=20mm,
+  top=30mm,
+  bottom=30mm,
+  bindingoffset=10mm
+  % use vmargin=2cm to make vertical margins equal to 2cm.
+  % use hmargin=3cm to make horizontal margins equal to 3cm.
+  % use margin=3cm to make all margins  equal to 3cm.
+] {geometry}
 
 \input{macros}
 
 \setlength\parindent{0pt}
 
-\title{Exploratory Data Analysis in Pharo}
+\title{Towards Exploratory Data Analysis for Pharo}
+% \author{
+%   % 1st. author
+%   \alignauthor
+%   Oleksandr Zaytsev\\
+% %     \affaddr{This is Author School Name}\\
+%   % 2nd. author
+%     \email{olk.zaytsev@gmail.com}
+%   \alignauthor
+%   Nick Papoylias
+% %     \affaddr{This is Author School Name}\\
+%     \texttt{npapoylias@gmail.com}
+%   % 3rd. author
+%   \alignauthor
+%   Serge Stinckwich
+% %     \affaddr{This is Author School Name}\\
+%     \texttt{serge.stinckwich@gmail.com}
+% }
+
 \author{
   Oleksandr Zaytsev\\
-  \texttt{olk.zaytsev@gmail.com}
-}
+    \texttt{olk.zaytsev@gmail.com}}
+
 \date{}
 
 \begin{document}
@@ -49,10 +81,12 @@
 % We propose this solution...
 % Our solution solves P in such and such way.
 
-\noindent The simplicity and power of Smalltalk combined with a live environment provided by Pharo create a perfect environment for data analysis. The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm. Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both powerful tool for professional data analysts, and a simple environment for everyone who wants to play with a data set. Many important tools and algorithms are already implemented in PolyMath. But the essential part of data analysis toolkit is missing - the specialized data structures for tabular data sets with a simple and powerful API for summarizing, cleaning, and manipulating the data. In this paper I introduce \texttt{DataFrame} and \texttt{DataSeries} - the new collections specifically designed for working with structured data. I demonstrate how these tools can be used for descriptive statistics and the exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis.
+\noindent Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for dynamic environments such as Pharo. Despite the fact that many important tools for data-analysis are already implemented in PolyMath, we are still missing. 
+
+\noindent The simplicity and power of Smalltalk combined with a live environment provided by Pharo creates a perfect environment for data analysis. The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm. Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both powerful tool for professional data analysts, and a simple environment for everyone who wants to play with a data set. Many important tools and algorithms are already implemented in PolyMath. But the essential part of data analysis toolkit is missing - the specialized data structures for tabular data sets with a simple and powerful API for summarizing, cleaning, and manipulating the data. In this paper I introduce \texttt{DataFrame} and \texttt{DataSeries} - the new collections specifically designed for working with structured data. I demonstrate how these tools can be used for descriptive statistics and the exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis.
 \end{abstract}
 
-
+\begin{multicols}{2}
 \section{Introduction}
 \label{sec:intro}
 
@@ -66,8 +100,6 @@
 % What our solution is \ct{Set} and \ct{OrderedCollection} (so that the reader knows where the paper is going)
 %
 % Contribution of the paper
-
-Explanatory data analysis is the ...
 
 All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in section \
 
@@ -97,6 +129,7 @@ All pictures in this paper are the built-in DataFrame visualizations that are cr
 
 \section{Exploratory Data Analysis}
 \label{sec:eda}
+Explanatory data analysis is the ...
 
 Everything that doesn't include fitting model to a data is an exploratory data analysis.
 
@@ -109,19 +142,43 @@ Here are the main reasons we use EDA:
   \item assessing the direction and rough size of relationships between explanatory and outcome variables
 \end{itemize}
 
+By the number of variables and the ... the techniques of exploratory data analysis can be cross-classified into four types: univariate graphical, univariate non-graphical, multivariate graphical, and multivariate non-graphical.
 
-\section{DataFrame class}
+\section{DataSeries and DataFrame}
 \label{sec:dataframe}
-...
+DataSeries and DataFrame are the high-level data structures that make data analysis in Pharo fast and easy.
+\cite{McKinney}
+
+DataFrame can be loaded into a Pharo image with the following Metacello script:
+\begin{code}{}
+Metacello new
+  baseline: 'DataFrame';
+  repository: 'github://PolyMathOrg/DataFrame';
+  load.
+\end{code}
+
+\textbf{DataSeries} is an array-like object containing ...
+The easiest way of creating a series is by converting it from as array. The keys will be automatically set to numeric ..., and the name will remain empty. 
+
+\begin{code}{}
+series := #(a b c) asDataSeries.
+\end{code}
+
+You can change the name and the keys of the DataSeries after it was created.
+
+\begin{code}{}
+series name: 'letters'.
+series keys: #(a1 a2 a3).
+\end{code}
 
 %\section{Proposed Solution}%
 \section{Exploring the Iris Data Set}
 \label{sec:contribution}
-
-Free form, variable number of sections, technical details.
-
-But in general do not mix solution and discussions/possible variation
-let that for discussion
+%
+% Free form, variable number of sections, technical details.
+%
+% But in general do not mix solution and discussions/possible variation
+% let that for discussion
 
 We can start by loading iris data set from a CSV file.
 \begin{code}{}
@@ -141,24 +198,30 @@ data head.
 data tail.
 \end{code}
 
-\subsection{Univariate non-graphical EDA}
-To access a single variable we ask a data frame for a specific column, using its name or integer index
-
+The output will be the following table
 \begin{code}{}
-var := data column: #sepal_width. "Accessing column by its name"
-var := data columnAt: 1. "Getting column by index"
+1   #(5.1 3.5 1.4 0.2 #setosa)
+2	  #(4.9 3 1.4 0.2 #setosa)
+3	  #(4.7 3.2 1.3 0.2 #setosa)
+4	  #(4.6 3.1 1.5 0.2 #setosa)
+5	  #(5 3.6 1.4 0.2 #setosa)
+
 \end{code}
 
-What we can do with a column depends on a type of statistical variable it represents. If the variable is categorical, we can ..., if its quantitative, we can look at the ... statistics.
+\subsection{Univariate non-graphical EDA}
+To access a single variable we ask a data frame for a specific column, using its name or number. The result will be a DataSeries object.
 
 \begin{code}{}
-var min.
-var max.
-var range.
-var average. "a.k.a. mean"
-var median.
-var mode.
-var stdev.
+series := data column: #sepal_width.
+series := data columnAt: 1.
+\end{code}
+
+What we can do with a column depends on a type of statistical variable it represents. The best univariate non-graphical EDA for categorical data is a simple tabulation of the frequency of each category\cite{Seltman}. If the data is quantitative, we can ...
+\texttt{min, max, range, average, median, mode, stdev, variance}
+
+\begin{code}{}
+series average. 
+series stdev.
 \end{code}
 
 \subsection{Univariate graphical EDA}
@@ -178,7 +241,7 @@ var barplot.
 \end{figure}
 
 \subsection{Multivariate non-graphical EDA}
-...
+Multivariate non-graphical EDA shows the relationship between two variables in form of either cross-tabulation (categorical data) or statistics (quantitative data).
 
 \subsection{Multivariate graphical EDA}
 \begin{figure}[H]
@@ -200,29 +263,36 @@ vars scatterplot.
   \end{center}
 \end{figure}
 
-\section{Discussion}
-\label{sec:discussion}
+% \section{Discussion}
+% \label{sec:discussion}
+%
+% Discussion of actual solution \emph{vs.} initial constraints from
+% \ref{sec:problem}. Explain the space of the solution, why we made it this way.
+%
+% Evaluation of the solution. How does the solution meet the criteria? Where
+% does it succeed or fails...
 
-Discussion of actual solution \emph{vs.} initial constraints from
-\ref{sec:problem}. Explain the space of the solution, why we made it this way.
 
-Evaluation of the solution. How does the solution meet the criteria? Where
-does it succeed or fails...
+% \section{Related Works}
+% \label{sec:related}
+%
+% Other solutions in the domain, and a real comparison of our contribution with
+% solutions from other people.
 
-
-\section{Related Works}
-\label{sec:related}
-
-Other solutions in the domain, and a real comparison of our contribution with
-solutions from other people.
-
+\section{Future work}
+At the time of writing this paper DataFrame is capable of...
+However, a lot of functionality is still missing. For example, we need tools for
+\begin{itemize}
+  \item data wrangling
+  \item data aggregation and grouping
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this paper, we \textsf{looked}\xspace at problem P with this context and these
-constraints. We proposed solution S. It has such good points and such not so
-good ones. Now we could do this or that.
+% In this paper, we \textsf{looked}\xspace at problem P with this context and these
+% constraints. We proposed solution S. It has such good points and such not so
+% good ones. Now we could do this or that.
 
 
 % \section*{macro example}
@@ -235,9 +305,9 @@ good ones. Now we could do this or that.
 %     a := 
 % \end{code}
 
-\subsection*{Acknowledgements} This work was supported by Ministry of Higher Education and Research, Nord-Pas de Calais Regional Council, FEDER through the 'Contrat de
-Projets Etat Region (CPER) 2007-2013',  the Cutter ANR project, ANR-10-BLAN-0219 and the MEALS Marie Curie Actions program FP7-PEOPLE-2011-
-IRSES MEALS (no. 295261). 
+% \subsection*{Acknowledgements} This work was supported by Ministry of Higher Education and Research, Nord-Pas de Calais Regional Council, FEDER through the 'Contrat de
+% Projets Etat Region (CPER) 2007-2013',  the Cutter ANR project, ANR-10-BLAN-0219 and the MEALS Marie Curie Actions program FP7-PEOPLE-2011-
+% IRSES MEALS (no. 295261). 
 
 % \bibliographystyle{plain}
 % \bibliography{foo.bib}
@@ -247,7 +317,10 @@ IRSES MEALS (no. 295261).
 % \section{Lots of Furry Technical Details}
 
 \bibliographystyle{abbrv}
-\bibliography{rmod,others}
+\bibliography{pharoeda}
+
+%\bibliography{rmod,others}
+\end{multicols}
 \end{document}
 
 %%% Local Variables: 
