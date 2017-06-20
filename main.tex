@@ -157,18 +157,20 @@ Metacello new
 
 \textbf{DataSeries} is an ordered collection that combines the properties of both Dictionary and Array, together with some extra functionality. It has a name and contains an array of data mapped to the corresponding array of keys (index values).
 
-The easiest way of creating a series is by converting it from an array. The keys will be automatically set to the numeric sequence which can be described as an interval (1 to: n), where n is the size of array, and the name will remain empty. 
+The easiest way of creating a series is by converting it from an array. 
 
 \begin{code}{}
 series := #(a b c) asDataSeries.
 \end{code}
 
-You can change the name and the keys of the DataSeries after it was created.
+The keys will be automatically set to the numeric sequence which can be described as an interval (1 to: n), where n is the size of array, and the name will remain empty. Both name and the keys of a DataSeries can be changed later:
 
 \begin{code}{}
 series name: 'letters'.
 series keys: #(a1 a2 a3).
 \end{code}
+
+\textbf{DataFrame} is a tabular data structure and an ordered collection of columns. It works like a spreadsheet or a relational database. DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
 
 %\section{Proposed Solution}%
 \section{Exploring the Iris Data Set}
@@ -199,11 +201,11 @@ data tail.
 
 The output will be the following table
 \begin{code}{}
-1   #(5.1 3.5 1.4 0.2 #setosa)
-2	  #(4.9 3 1.4 0.2 #setosa)
-3	  #(4.7 3.2 1.3 0.2 #setosa)
-4	  #(4.6 3.1 1.5 0.2 #setosa)
-5	  #(5 3.6 1.4 0.2 #setosa)
+1   (5.1 3.5 1.4 0.2 #setosa)
+2	  (4.9 3 1.4 0.2 #setosa)
+3	  (4.7 3.2 1.3 0.2 #setosa)
+4	  (4.6 3.1 1.5 0.2 #setosa)
+5	  (5 3.6 1.4 0.2 #setosa)
 
 \end{code}
 
