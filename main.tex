@@ -131,14 +131,7 @@ All pictures in this paper are the built-in DataFrame visualizations that are cr
 \label{sec:eda}
 \textbf{Exploratory data analysis (EDA)} is an approach to analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method of looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis\cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
 
-Here are the main reasons we use EDA:
-\begin{itemize}
-  \item detection of mistakes
-  \item checking of assumptions
-  \item preliminary selection of appropriate models
-  \item determining relationships among the explanatory variables
-  \item assessing the direction and rough size of relationships between explanatory and outcome variables
-\end{itemize}
+EDA can be particularly useful for uncovering underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting applopriate models for further analysis.
 
 By the number of variables and the ... the techniques of exploratory data analysis can be cross-classified into four types: univariate graphical, univariate non-graphical, multivariate graphical, and multivariate non-graphical.
 
@@ -165,7 +158,7 @@ The keys will be automatically set to the numeric sequence which can be describe
 series name: 'letters'.
 series keys: #(a1 a2 a3).
 \end{code}
-\textbf{DataFrame} is a tabular data structure and an ordered collection of columns. It works like a spreadsheet or a relational database. DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
+\textbf{DataFrame} is a tabular data structure and an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, and explanatory variable. DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
 
 A simple DataFrame can be created from an array of rows or columns.
 \begin{code}{}
@@ -177,7 +170,7 @@ Those two line produce exactly the same DataFrame. Once again, the names (key va
 df columnNames: #(Name Age IsMarried).
 \end{code}
 %\section{Proposed Solution}%
-\section{Exploring the Iris Data Set}
+\section{Exploring Iris Data Set}
 \label{sec:contribution}
 %
 % Free form, variable number of sections, technical details.
@@ -227,7 +220,7 @@ Histogram is the only graphical technique that can be used for a categorical var
 
 \begin{code}{}
 var := data column: #species.
-var barplot.
+var histogram.
 \end{code}
 
 \begin{figure}[H]
