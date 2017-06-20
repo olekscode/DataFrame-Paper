@@ -1,12 +1,17 @@
 \begin{thebibliography}{1}
 
 \bibitem{McKinney}
-W.~McKinney.
+Wes McKinney.
 \newblock {\em Python for Data Analysis}.
 \newblock O'Reilly Media Inc., 2012.
 
+\bibitem{eStats}
+NIST/SEMATECH.
+\newblock {\em e-Handbook of Statistical Methods}.
+\newblock http://www.itl.nist.gov/div898/handbook/. \\Accessed: 2017-06-20.
+
 \bibitem{Seltman}
-H.~J. Seltman.
+Howard~J. Seltman.
 \newblock {\em Experimental Design and Analysis}.
 \newblock 2015.
 
