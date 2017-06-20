@@ -155,8 +155,9 @@ Metacello new
   load.
 \end{code}
 
-\textbf{DataSeries} is an array-like object containing ...
-The easiest way of creating a series is by converting it from as array. The keys will be automatically set to numeric ..., and the name will remain empty. 
+\textbf{DataSeries} is an ordered collection that combines the properties of both Dictionary and Array, together with some extra functionality. It has a name and contains an array of data mapped to the corresponding array of keys (index values).
+
+The easiest way of creating a series is by converting it from an array. The keys will be automatically set to the numeric sequence which can be described as an interval (1 to: n), where n is the size of array, and the name will remain empty. 
 
 \begin{code}{}
 series := #(a b c) asDataSeries.
