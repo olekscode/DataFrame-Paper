@@ -373,11 +373,12 @@ species       5
 
 \subsection{Univariate non-graphical EDA}
 \label{sec:uni-non}
-DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines initialize the \texttt{series} variable with the same column
+
+DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines return the same \texttt{sepal\_width} column
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-series := data column: #sepal_width.
-series := data columnAt: 2.
+data column: #sepal_width.
+data columnAt: 2.
 \end{lstlisting}
 
 The best univariate non-graphical EDA technique for categorical data is a simple tabulation of frequencies for each category\cite{Seltman}. Let's look at a \texttt{species} column. As we can see by printing its unique values, \texttt{species} is a categorical variable with 3 categories: setosa, versicolor, and virginica
@@ -410,17 +411,31 @@ If the variable is quantitative, we can summarize it with the following statisti
 \subsection{Univariate graphical EDA}
 \label{sec:uni-graph}
 
-The only graphical technique that can be used for a categorical variable is histogram - a barplot where the hight of each bar represents the proportion (count/total count) of cases for a range of values.
-Histogram is the only graphical technique that can be used for a categorical variable.
+The only graphical technique that can be used for a categorical variable is histogram - a barplot where the hight of each bar represents the count of cases for a range of values. Histogram is a graphical equivalent of \texttt{frequencyTable}, described in \ref{sec:uni-non}. If applied to a categorical variable, the height of each bar will be defined by the amount of data that belongs to a corresponding category.
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
-var := data column: #species.
-var histogram.
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #species) histogram.
+(data column: #sepal_width) histogram.
 \end{lstlisting}
 
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.75\linewidth]{species_bar}
+  \end{center}
+  \begin{center}
+  \includegraphics[width=0.8\linewidth]{sepal_width_bar}
+  \end{center}
+\end{figure}
+
+The important property of a histogram is the bin width - the number of cases that are summarized by a single bar. According to statisticians, like \cite{Seltman}, choosing a bin width is an iterative process. Usually it is chosen between 5 and 30, depending on the amount of data and the shape of distribution, which can be seen on a histogram.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #sepal_width) histogram: 5.
+\end{lstlisting}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=0.8\linewidth]{petal_width_scatter}
   \end{center}
 \end{figure}
 
@@ -448,6 +463,12 @@ vars scatterplot.
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.75\linewidth]{sepal_wl_scatter}
+  \end{center}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=\linewidth]{scatterplot_matrix}
   \end{center}
 \end{figure}
 
