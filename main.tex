@@ -282,6 +282,7 @@ df columnNames: #(Name Age IsMarried).
 \end{lstlisting}
 
 \subsection{DataFrame Internals}
+\label{sec:internals}
 Internally DataSeries and DataFrame are implemented as subclasses of OrderedDictionary. This way they support the key/value/association interface of a Dictionary and preserves the key insertion order. This is the fourth iteration of a model. Previously the data structures were implemented as subclasses of Dictionary or Array. Both approaches have proved to be ineffective, because an Array can not have variable size and Dictionary stores its elements in an unordered manner and uses the hashing technique to locate them\cite{Goldberg}. The model is evolving according to the needs, so while this implementation works fine on small datasets (like Iris or Housing data), it might prove to be useless when dealing with massive datasets. For that reason in future iterations we might consider reusing the internal structure of pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays\cite{McKinney}.
 
 Another important thing about the implementation of DataFrame collections is the use of composition instead of inheritance. The problem is that DataSeries (one-dimensional) and DataFrame (two-dimensional) are classes of different nature that may require the entirely different intertal implementation. Nevertheless, we want them to be polymorphic and respond to the same messages (many of these messges will also have the same implementation). One way of achieving polymorphic behavior and code reuse without using inheritance is the composition reuse principle. In Pharo this can be done using the Traits instrument.
@@ -290,7 +291,7 @@ At this point the head/tail functionality and the method that allows us to chang
 
 %\section{Proposed Solution}%
 \section{Exploring Iris Dataset}
-\label{sec:contribution}
+\label{sec:iris-eda}
 %
 % Free form, variable number of sections, technical details.
 %
@@ -309,7 +310,7 @@ DataFrame comes with a built-in collection of datasets that are widely used as e
 data := DataFrame loadIris.
 \end{lstlisting}
 
-To make sure that the data was loaded and to take a quick look on it, we can print its head (first 5 rows) or tail (last 5 rows). It is also possible to specify the number of rows that must be printed. As it was mentioned in the previous section, the same messages are supported by objects of the DataSeries class. This means that we can also look at a head or tail of a specific column. In the following example we ask for the first 5 and the last 3 rows of a DataFrame. Then we ask for the first and the last 5 elements of a \texttt{sepal\_length} column (which is a DataSeries).
+To make sure that the data was loaded and to take a quick look on it, we can print its head (first 5 rows) or tail (last 5 rows). It is also possible to specify the number of rows that must be printed. As it was mentioned in \ref{sec:internals}, the same messages are supported by objects of the DataSeries class. This means that we can also look at a head or tail of a specific column. In the following example we ask for the first 5 and the last 3 rows of a DataFrame. Then we ask for the first and the last 5 elements of a \texttt{sepal\_length} column (which is a DataSeries).
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data head.
@@ -358,19 +359,38 @@ species       5
 
 \subsection{Univariate non-graphical EDA}
 \label{sec:uni-non}
-To access a single variable we ask a data frame for a specific column, using its name or number. The result will be a DataSeries object.
+DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines initialize the \texttt{series} variable with the same column
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 series := data column: #sepal_width.
-series := data columnAt: 1.
+series := data columnAt: 2.
 \end{lstlisting}
 
-What we can do with a column depends on a type of statistical variable it represents. The best univariate non-graphical EDA for categorical data is a simple tabulation of the frequency of each category\cite{Seltman}. If the data is quantitative, we can ...
-\texttt{min, max, range, average, median, mode, stdev, variance}
+The best univariate non-graphical EDA technique for categorical data is a simple tabulation of frequencies for each category\cite{Seltman}. Let's look at a \texttt{species} column. As we can see by printing its unique values, \texttt{species} is a categorical variable with 3 categories: setosa, versicolor, and virginica
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
-series average. 
-series stdev.
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #species) unique.
+\end{lstlisting}
+
+Now we can tabulate this variable:
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #species) frequencyTable.
+\end{lstlisting}
+
+The response will be the following DataFrame. The first column (row names) holds the unique categories, the second column - the number of occurences of each category, and the third one shows the fraction of data that belongs ton each category. We can see that the sample data is evenly distributed among three categories.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+setosa      50  (1/3)
+versicolor   50  (1/3)
+virginica    50  (1/3)
+\end{lstlisting}
+
+If the variable is quantitative, we can summarize it with the following statistics: \texttt{min, max, range, average, median, mode, stdev, variance}
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #sepal_length) average. 
+(data column: #petal_width) stdev.
 \end{lstlisting}
 
 \subsection{Univariate graphical EDA}
