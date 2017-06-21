@@ -1,9 +1,34 @@
-\documentclass{article}
+\documentclass[sigplan]{acmart}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+%% Some recommended packages.
+\usepackage{booktabs}   %% For formal tables:
+                        %% http://ctan.org/pkg/booktabs
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+% DOI
+\acmDOI{10.475/123_4}
+
+% ISBN
+\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+\acmConference[IWST'17]{International Workshop on Smalltalk Technologies}{ESUG 2017}{Maribor, Slovenia 4-8 September 2017} 
+%\acmYear{1997}
+\copyrightyear{2017}
+
+%\acmPrice{15.00}
+
+%\acmBadgeL[http://ctuning.org/ae/ppopp2016.html]{ae-logo}
+%\acmBadgeR[http://ctuning.org/ae/ppopp2016.html]{ae-logo}
+
+
 
 \usepackage[T1]{fontenc} %%%key to get copy and paste for the code!
 \usepackage[utf8]{inputenc} %%% to support copy and paste with accents for frnehc stuff
-\usepackage{times}
-\usepackage[scaled=0.85]{helvet}
+%\usepackage{times}
+%\usepackage[scaled=0.85]{helvet}
 \usepackage{graphicx}
 \usepackage{ifthen}
 \usepackage{xspace}
@@ -15,9 +40,9 @@
 \usepackage{amsmath}
 \usepackage{stmaryrd}
 \usepackage{enumerate}
-\usepackage{cite}
-\usepackage[pdftex,colorlinks=true,pdfstartview=FitV,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
-\usepackage{xspace}
+%\usepackage{cite}
+% \usepackage[pdftex,colorlinks=true,pdfstartview=FitV,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+%\usepackage{xspace}
 %\newcommand*{\eg}{e.g.\@\xspace}
 %\newcommand*{\ie}{i.e.\@\xspace}
 
@@ -33,58 +58,83 @@
 % \usepackage{xcolor}
 % \usepackage{listings}
 % \usepackage{highlight}
-\usepackage{multicol}
+%\usepackage{multicol}
 \usepackage{url}
 
-\usepackage
-[
-  left=20mm,
-  right=20mm,
-  top=30mm,
-  bottom=30mm,
-  bindingoffset=10mm
-  % use vmargin=2cm to make vertical margins equal to 2cm.
-  % use hmargin=3cm to make horizontal margins equal to 3cm.
-  % use margin=3cm to make all margins  equal to 3cm.
-] {geometry}
+% \usepackage
+% [
+%   left=20mm,
+%   right=20mm,
+%   top=30mm,
+%   bottom=30mm,
+%   bindingoffset=10mm
+%   % use vmargin=2cm to make vertical margins equal to 2cm.
+%   % use hmargin=3cm to make horizontal margins equal to 3cm.
+%   % use margin=3cm to make all margins  equal to 3cm.
+% ] {geometry}
 
 \input{macros}
 
-\setlength\parindent{0pt}
+%\setlength\parindent{0pt}
 
-\title{Towards Exploratory Data Analysis for Pharo}
-% \author{
-%   % 1st. author
-%   \alignauthor
-%   Oleksandr Zaytsev\\
-% %     \affaddr{This is Author School Name}\\
-%   % 2nd. author
-%     \email{olk.zaytsev@gmail.com}
-%   \alignauthor
-%   Nick Papoylias
-% %     \affaddr{This is Author School Name}\\
-%     \texttt{npapoylias@gmail.com}
-%   % 3rd. author
-%   \alignauthor
-%   Serge Stinckwich
-% %     \affaddr{This is Author School Name}\\
-%     \texttt{serge.stinckwich@gmail.com}
-% }
+% \date{}
 
-\author{
-  Oleksandr Zaytsev\\
-    \texttt{olk.zaytsev@gmail.com}}
-
-\date{}
+\input{smalltalkEnv}
 
 \begin{document}
-\maketitle
+\title{Towards Exploratory Data Analysis for Pharo}
+% \titlenote{Produces the permission block, and
+%   copyright information}
+% \subtitle{Extended Abstract}
+% \subtitlenote{The full version of the author's guide is available as
+%   \texttt{acmart.pdf} document}
+
+\author{Oleksandr Zaytsev}
+%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+\affiliation{%
+  \institution{Ivan Franko National University\\
+  Faculty of Applied Mathematics and Informatics, Ukraine}
+  % \streetaddress{P.O. Box 1212}
+  % \city{Dublin}
+  % \state{Ohio}
+  % \postcode{43017-6221}
+}
+\email{olk.zaytsev@gmail.com}
+
+\author{Nick Papoulias}
+%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+\affiliation{%
+  \institution{UMMISCO IRD France Nord, Bondy\\
+  Sorbonne Universités UPMC, Univ. Paris 06, France\\}
+  % \streetaddress{P.O. Box 1212}
+  % \city{Dublin}
+  % \state{Ohio}
+  % \postcode{43017-6221}
+}
+\email{npapoylias@gmail.com}
+
+
+\author{Serge Stinckwich}
+%\authornote{Dr.~Trovato insisted his name be first.}
+%\orcid{1234-5678-9012}
+\affiliation{%
+  \institution{UMMISCO IRD France Nord, Bondy\\
+  Sorbonne Universités UPMC, Univ. Paris 06, France\\
+   Université de Caen Normandie, Caen}
+  % \streetaddress{P.O. Box 1212}
+  % \city{Dublin}
+  % \state{Ohio}
+  % \postcode{43017-6221}
+}
+\email{serge.stinckwich@ird.fr}
 
 %\title{Title that Describes the Contribution that Solves a Problem}
 %\author{Oleksandr Zaytsev}
 %\date{\today}
 %\maketitle
-
+\renewcommand{\shortauthors}{O. Zaytsev et al.}
 \begin{abstract}
 % In this context...
 % We consider this problem P...
@@ -92,11 +142,47 @@
 % We propose this solution...
 % Our solution solves P in such and such way.
 
-\noindent Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for interactive exploration environments. In Smalltalk despite the fact that many important analysis tools are already present (for \eg in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the \texttt{DataFrame} and \texttt{DataSeries} collections - that are specifically designed for working with structured data. We demonstrate how these tools can be used for descriptive statistics and exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis. We then detail the implementation trade-offs that we are currently facing in our implementation for Pharo and discuss future perspectives.
+Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for interactive exploration environments. In Smalltalk despite the fact that many important analysis tools are already present (for \eg in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the \texttt{DataFrame} and \texttt{DataSeries} collections - that are specifically designed for working with structured data. We demonstrate how these tools can be used for descriptive statistics and exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis. We then detail the implementation trade-offs that we are currently facing in our implementation for Pharo and discuss future perspectives.
 \end{abstract}
 
 
-\begin{multicols}{2}
+\begin{CCSXML}
+<ccs2012>
+ <concept>
+  <concept_id>10010520.10010553.10010562</concept_id>
+  <concept_desc>Computer systems organization~Embedded systems</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010520.10010575.10010755</concept_id>
+  <concept_desc>Computer systems organization~Redundancy</concept_desc>
+  <concept_significance>300</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010520.10010553.10010554</concept_id>
+  <concept_desc>Computer systems organization~Robotics</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10003033.10003083.10003095</concept_id>
+  <concept_desc>Networks~Network reliability</concept_desc>
+  <concept_significance>100</concept_significance>
+ </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Computer systems organization~Embedded systems}
+\ccsdesc[300]{Computer systems organization~Redundancy}
+\ccsdesc{Computer systems organization~Robotics}
+\ccsdesc[100]{Networks~Network reliability}
+
+
+\keywords{Tabular Data-structures, Fluent APIs, Exploratory Data Analysis,
+Live Environments}
+
+\maketitle
+
+%\begin{multicols}{2}
 \section{Introduction}
 \label{sec:intro}
 
@@ -115,7 +201,7 @@ The simplicity and power of Smalltalk combined with the live environment of Phar
 % The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm.
 Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both a powerful tool for professional data analysts, and a simple environment for everyone who wants to experiment with a simple data set. Many important tools and algorithms are already implemented in libraries such as PolyMath, but we are still missing essential data-structures for tabular data and a fluent API for advanced data-analysis techniques. To overcome this problem we introduce in this paper the \texttt{DataFrame} and \texttt{DataSeries} collections for working with structured data, and through several examples, we demonstrate how these tools can be used for descriptive statistics and exploratory data analysis allowing us to get the summaries of data sets, detect mistakes, determine relations, and select the appropriate models for further analysis.
 
-All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in Section \ref{sec:dataframe}
+All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in Section \ref{sec:dataframe}.
 
 The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following questions: \textit{What is EDA good for and how to do it right ?}. It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame collections for structured data. Section \ref{sec:contribution} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API. Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
 
@@ -143,7 +229,7 @@ The rest of this paper is structured as follows: Section \ref{sec:eda} provides 
 
 \section{Exploratory Data Analysis}
 \label{sec:eda}
-\textbf{Exploratory data analysis (EDA)} is an approach to analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method of looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis\cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
+\textbf{Exploratory data analysis (EDA)} is an approach to analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method of looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
 
 EDA can be particularly useful for uncovering underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting applopriate models for further analysis\cite{eStats}.
 
@@ -155,34 +241,44 @@ DataSeries and DataFrame are the high-level data structures that make data analy
 \cite{McKinney}
 
 DataFrame can be loaded into a Pharo image with the following Metacello script:
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 Metacello new
     baseline: 'DataFrame';
     repository: 'github://PolyMathOrg/DataFrame';
     load.
-\end{code}
+\end{lstlisting}
+
 \textbf{DataSeries} is an ordered collection that combines the properties of both Dictionary and Array, together with some extra functionality. It has a name and contains an array of data mapped to the corresponding array of keys (index values).
 
 The easiest way of creating a series is by converting it from an array. 
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series := #(a b c) asDataSeries.
-\end{code}
+\end{lstlisting}
+
 The keys will be automatically set to the numeric sequence which can be described as an interval (1 to: n), where n is the size of array, and the name will remain empty. Both name and the keys of a DataSeries can be changed later:
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series name: 'letters'.
 series keys: #(a1 a2 a3).
-\end{code}
+\end{lstlisting}
+
 \textbf{DataFrame} is a tabular data structure and an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, and explanatory variable. DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
 
 A simple DataFrame can be created from an array of rows or columns.
-\begin{code}{}
-df := DataFrame rows: #((John 25 true)(Jane 21 false)).
-df := DataFrame columns: #((John Jane)(25 21)(true false)).
-\end{code}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+df:=DataFrame rows: #((John 25 true)(Jane 21 false)).
+df:=DataFrame columns: #((John Jane)(25 21)(true false)).
+\end{lstlisting}
+
 Those two line produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 df columnNames: #(Name Age IsMarried).
-\end{code}
+\end{lstlisting}
+
 %\section{Proposed Solution}%
 \section{Exploring Iris Data Set}
 \label{sec:contribution}
@@ -193,49 +289,57 @@ df columnNames: #(Name Age IsMarried).
 % let that for discussion
 
 We can start by loading iris data set from a CSV file.
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 data := DataFrame fromCsv: '/path/to/iris.csv'.
-\end{code}
+\end{lstlisting}
+
 DataFrame comes with a built-in collection of data sets that are widely used as examples for data analysis and machine learning problems. Iris is among them, so an alternative way of loading it would be simply
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 data := DataFrame loadIris.
-\end{code}
+\end{lstlisting}
+
 Now let's take a look at the first and the last 5 entries in our table. These slices are called \textit{head} and \textit{tail} of a data frame.
 \begin{code}{}
 data head.
 data tail.
 \end{code}
 The output will be the following table
-\begin{code}{}
-1   (5.1 3.5 1.4 0.2 #setosa)
-2	  (4.9 3 1.4 0.2 #setosa)
-3	  (4.7 3.2 1.3 0.2 #setosa)
-4	  (4.6 3.1 1.5 0.2 #setosa)
-5	  (5 3.6 1.4 0.2 #setosa)
-\end{code}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+(5.1 3.5 1.4 0.2 #setosa)
+(4.9 3 1.4 0.2 #setosa)
+(4.7 3.2 1.3 0.2 #setosa)
+(4.6 3.1 1.5 0.2 #setosa)
+(5 3.6 1.4 0.2 #setosa)
+\end{lstlisting}
 
 \subsection{Univariate non-graphical EDA}
 To access a single variable we ask a data frame for a specific column, using its name or number. The result will be a DataSeries object.
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series := data column: #sepal_width.
 series := data columnAt: 1.
-\end{code}
+\end{lstlisting}
+
 What we can do with a column depends on a type of statistical variable it represents. The best univariate non-graphical EDA for categorical data is a simple tabulation of the frequency of each category\cite{Seltman}. If the data is quantitative, we can ...
 \texttt{min, max, range, average, median, mode, stdev, variance}
-\begin{code}{}
+
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series average. 
 series stdev.
-\end{code}
+\end{lstlisting}
 
 \subsection{Univariate graphical EDA}
 \subsubsection{Categorical}
 
 Histogram is the only graphical technique that can be used for a categorical variable.
 
-\begin{code}{}
+\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 var := data column: #species.
 var histogram.
-\end{code}
+\end{lstlisting}
 
 \begin{figure}[H]
   \begin{center}
@@ -324,7 +428,7 @@ However, a lot of functionality is still missing. For example, we need tools for
 \bibliography{pharoeda}
 
 %\bibliography{rmod,others}
-\end{multicols}
+%\end{multicols}
 \end{document}
 
 %%% Local Variables: 
