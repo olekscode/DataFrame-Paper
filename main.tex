@@ -204,9 +204,9 @@ The simplicity and power of Smalltalk combined with the live environment of Phar
 % The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm.
 Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both a powerful tool for professional data analysts, and a simple environment for everyone who wants to experiment with a simple data set. Many important tools and algorithms are already implemented in libraries such as PolyMath, but we are still missing essential data-structures and a fluent API for advanced data-analysis techniques. To overcome this problem we introduce in this paper the \texttt{DataFrame} and \texttt{DataSeries} collections for working with structured data, and through several examples demonstrate how these tools can be used for descriptive statistics and exploratory data analysis allowing us to get the summaries of data sets, detect mistakes, determine relations, and select the appropriate models for further analysis.
 
-Our work is motivated by popular data-analysis techniques (such as split-apply-combine \cite{wickham2011split} and collection pipelines \cite{Fowler15}) as well as from dedicated data-structure and APIs for data-analysis environments for Python \cite{McKinney}, R \cite{team2000r}, Mathematica \cite{wolfram1999mathematica} and the .Net platform (through the LINQ embedded query language \cite{meijer2006linq}). Nevertheless our primary inspiration is drawn form Smalltalk itself and can be traced back to the extensive coverage of the Smalltalk-80 book on Collections \cite{Goldberg} (with 4 Chapters dedicated to the usage and design of the Collection hierarchy). As well as from more recent work from our community that refined the implementation of collections using Traits \cite{black2003applying, bourgois2010bloc, scharli2003traits} and promises \cite{Alcocer16}.
+Our work is motivated by popular data-analysis techniques (such as split-apply-combine \cite{wickham2011split} and collection pipelines \cite{Fowler15}) as well as from dedicated data-structure and APIs for data-analysis environments for Python \cite{McKinney}, R \cite{team2000r}, Mathematica \cite{wolfram1999mathematica} and the .Net platform (through the LINQ embedded query language \cite{meijer2006linq}). Nevertheless our primary inspiration is drawn form Smalltalk itself and can be traced back to the extensive coverage of the Smalltalk-80 book on Collections \cite{Goldberg} (with over four chapters dedicated to the usage and design of the Collection hierarchy). As well as from more recent work from our community that refined the implementation of collections using traits \cite{black2003applying, bourgois2010bloc, scharli2003traits} and promises \cite{Alcocer16}.
 
-To facilitate our readers, we should note here that all figures in this paper are DataFrame visualizations that are created with Roassal2 and can be reproduced by the steps described in Section \ref{sec:dataframe}. The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right ?}. It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:contribution} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API. Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
+To facilitate our readers, we should note here that all figures in this paper are DataFrame visualizations that are created with Roassal2 and can be reproduced by the steps described in Section \ref{sec:dataframe}. The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right ?}. It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:iris-eda} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API. Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
 
 
 
@@ -236,7 +236,7 @@ To facilitate our readers, we should note here that all figures in this paper ar
 
 EDA can be particularly useful for uncovering the underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting appropriate models for further analysis\cite{eStats}.
 
-Depending on the number of variables involved and the input/output abstractions used, the techniques of exploratory data analysis can be classified into four categories: univariate non-graphical (Sub-section \ref{sec:uni-non}), univariate graphical (Sub-section \ref{sec:uni-graph}), multivariate graphical (Sub-section \ref{sec:multi-non}), and multivariate non-graphical (Sub-section \ref{sec:multi-non}).
+Depending on the number of variables involved and the input/output abstractions used, the techniques of exploratory data analysis can be classified into four categories: univariate non-graphical (Sub-section \ref{sec:uni-non}), univariate graphical (Sub-section \ref{sec:uni-graph}), multivariate non-graphical (Sub-section \ref{sec:multi-non}) and multivariate graphical (Sub-section \ref{sec:multi-graph}).
 
 \section{DataSeries and DataFrame}
 \label{sec:dataframe}
@@ -251,28 +251,30 @@ Metacello new
     load.
 \end{lstlisting}
 
-\textbf{DataSeries} is an ordered collection that combines the properties of both Dictionary and Array, together with some extra functionality. It has a name and contains an array of data mapped to the corresponding array of keys (index values).
+\textbf{A DataSeries} can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
 
-The easiest way of creating a series is by converting it from an array. 
+The easiest way of to create a series is by converting an array: 
 
 \begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series := #(a b c) asDataSeries.
 \end{lstlisting}
 
-The keys will be automatically set to the numeric sequence which can be described as an interval (1 to: n), where n is the size of array, and the name will remain empty. Both name and the keys of a DataSeries can be changed later:
+The keys will be automatically set to the numeric sequence of the array indexes, which can be described as an interval (1 to: n), where n is the size of array. The name of the series at this point will remain empty. Both the name and the keys of a DataSeries can be changed later, as follows:
 
 \begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 series name: 'letters'.
 series keys: #(a1 a2 a3).
 \end{lstlisting}
 
-\textbf{DataFrame} is a tabular data structure and an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, and explanatory variable. DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
+\textbf{A DataFrame} is a tabular data structure that can be seen as an ordered collection of columns. It works like a spreadsheet or a relational database with one row per subject and one column for each subject identifier, outcome variable, explanatory variable \etc. A DataFrame has both row and column indices which can be changed if needed. The important feature of a DataFrame is that whenever we ask for a specific row or column, it responds with a DataSeries object that preserves the same indexing.
 
 A simple DataFrame can be created from an array of rows or columns.
 
 \begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
-df:=DataFrame rows: #((John 25 true)(Jane 21 false)).
-df:=DataFrame columns: #((John Jane)(25 21)(true false)).
+df:=DataFrame 
+     rows: #((John 25 true)(Jane 21 false)).
+df:=DataFrame 
+     columns: #((John Jane)(25 21)(true false)).
 \end{lstlisting}
 
 Those two line produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
@@ -281,13 +283,25 @@ Those two line produce exactly the same DataFrame. Once again, the names (key va
 df columnNames: #(Name Age IsMarried).
 \end{lstlisting}
 
-\subsection{DataFrame Internals}
+\subsection{Discussion: DataFrame Internals}
 \label{sec:internals}
-Internally DataSeries and DataFrame are implemented as subclasses of OrderedDictionary. This way they support the key/value/association interface of a Dictionary and preserves the key insertion order. This is the fourth iteration of a model. Previously the data structures were implemented as subclasses of Dictionary or Array. Both approaches have proved to be ineffective, because an Array can not have variable size and Dictionary stores its elements in an unordered manner and uses the hashing technique to locate them\cite{Goldberg}. The model is evolving according to the needs, so while this implementation works fine on small datasets (like Iris or Housing data), it might prove to be useless when dealing with massive datasets. For that reason in future iterations we might consider reusing the internal structure of pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays\cite{McKinney}.
 
-Another important thing about the implementation of DataFrame collections is the use of composition instead of inheritance. The problem is that DataSeries (one-dimensional) and DataFrame (two-dimensional) are classes of different nature that may require the entirely different intertal implementation. Nevertheless, we want them to be polymorphic and respond to the same messages (many of these messges will also have the same implementation). One way of achieving polymorphic behavior and code reuse without using inheritance is the composition reuse principle. In Pharo this can be done using the Traits instrument.
+Before continuing with a detailed example on how to use these classes 
+for data exploration, we would like to share our thoughts on their implementation. 
 
-At this point the head/tail functionality and the method that allows us to change keys of a data structure are implemented as traits. In future iterations, the data visualization, aggregation, and many other maethods that should be shared by DataSeries and DataFrame are also likely to be implemented as traits. Here is an example of how both DataSeries and DataFrame respond to a \texttt{head} message: "take first 5 elements from a collection, construct a collection of the same type with these elements, and return it". For a DataFrame these 5 elements will be rows of data (regardless of the internal implementation, the \texttt{at:} message should return a row as a single observation and a logical unit of a DataFrame). For DataSeries, these will be the atomic values.
+Our goal for these classes is to fully encapsulate their internal structure so that it is both easy to experiment with optimized  representations, but also allow for a polymorphic fluent API that can be implemented separately without breaking existing code. 
+
+This is why we are evolving the API and the implementation according to concrete needs we are facing while analyzing specific data-sets (like the Iris or Housing data-sets that we will shortly discuss). We are currently in the fourth iteration of the model, since there are many trade-offs to consider, between for \eg using inheritance, instance composition and/or trait composition for the implementation. Even inheriting directly for \eg from Array, Dictionary or OrdreredDictionary comes with its own set of trade-offs. In the future we might consider reusing the internal structure of the pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays \cite{McKinney}. 
+
+Finally functionalities such as the head/tail protocol or the protocol allowing us to change the keys of a data structure are all currently implemented as traits. In future iterations, we expect to extend the use of traits to include the data visualization and aggregation protocols, that should be shared among the DataSeries and DataFrame classes. 
+%
+% Internally DataSeries and DataFrame are implemented as subclasses of OrderedDictionary. This way they support the key/value/association interface of a Dictionary and preserves the key insertion order. This is the fourth iteration of a model. Previously the data structures were implemented as subclasses of Dictionary or Array. Both approaches have proved to be ineffective, because an Array can not have variable size and Dictionary stores its elements in an unordered manner and uses the hashing technique to locate them\cite{Goldberg}. The model is evolving according to the needs, so while this implementation works fine on small datasets (like Iris or Housing data), it might prove to be useless when dealing with massive datasets. For that reason in future iterations we might consider reusing the internal structure of pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays\cite{McKinney}.
+% %
+% % Another important thing about the implementation of DataFrame collections is the use of composition instead of inheritance. The problem is that DataSeries (one-dimensional) and DataFrame (two-dimensional) are classes of different nature that may require the entirely different intertal implementation. Nevertheless, we want them to be polymorphic and respond to the same messages (many of these messges will also have the same implementation). One way of achieving polymorphic behavior and code reuse without using inheritance is the composition reuse principle. In Pharo this can be done using the Traits instrument.
+%
+% At this point the head/tail functionality and the method that allows us to change keys of a data structure are implemented as traits. In future iterations, the data visualization, aggregation, and many other maethods that should be shared by DataSeries and DataFrame are also likely to be implemented as traits.
+
+% Here is an example of how both DataSeries and DataFrame respond to a \texttt{head} message: "take first 5 elements from a collection, construct a collection of the same type with these elements, and return it". For a DataFrame these 5 elements will be rows of data (regardless of the internal implementation, the \texttt{at:} message should return a row as a single observation and a logical unit of a DataFrame). For DataSeries, these will be the atomic values.
 
 %\section{Proposed Solution}%
 \section{Exploring Iris Dataset}
