@@ -244,7 +244,7 @@ DataFrame and DataSeries are the high-level data structures with which we intent
 
 They can be loaded into a Pharo image with the following Metacello script:
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 Metacello new
     baseline: 'DataFrame';
     repository: 'github://PolyMathOrg/DataFrame';
@@ -255,13 +255,13 @@ Metacello new
 
 The easiest way of to create a series is by converting an array: 
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 series := #(a b c) asDataSeries.
 \end{lstlisting}
 
 The keys will be automatically set to the numeric sequence of the array indexes, which can be described as an interval (1 to: n), where n is the size of array. The name of the series at this point will remain empty. Both the name and the keys of a DataSeries can be changed later, as follows:
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 series name: 'letters'.
 series keys: #(a1 a2 a3).
 \end{lstlisting}
@@ -270,7 +270,7 @@ series keys: #(a1 a2 a3).
 
 A simple DataFrame can be created from an array of rows or columns.
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 df:=DataFrame 
      rows: #((John 25 true)(Jane 21 false)).
 df:=DataFrame 
@@ -279,7 +279,7 @@ df:=DataFrame
 
 Those two line produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
 
-\begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 df columnNames: #(Name Age IsMarried).
 \end{lstlisting}
 
@@ -433,6 +433,11 @@ The important property of a histogram is the bin width - the number of cases tha
 (data column: #sepal_width) histogram: 5.
 \end{lstlisting}
 
+Quantitative variables can be visualized in many different ways: \texttt{plot, scatterplot, boxplot, histogram}. The following example demonstrates how we can ask a \texttt{petal\_width} column for a scatterplot of itself.
+ 
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+(data column: #petal_width) scatterplot.
+\end{lstlisting}
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.8\linewidth]{petal_width_scatter}
@@ -444,27 +449,65 @@ The important property of a histogram is the bin width - the number of cases tha
 
 Multivariate non-graphical EDA shows the relationship between two variables in form of either cross-tabulation (categorical data) or statistics (quantitative data).
 
+To get multiple columns from a DataFrame we can give it an array of column names or numbers, or ask for all the columns in a given range, specified by two numbers. The response to any of these messages will also be a DataFrame, and the order of columns will be the same as requested.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+data columns: #(petal_length sepal_width sepal_lenght).
+data columns: #(3 2 1).
+data columnsFrom: 3 to: 1.
+\end{lstlisting}
+
+When asked for a value of certain statistical measure, DataFrame will answer a DataSeries of the same size as one of its rows, with keys equal to the column names and the values of that stitistics applied to the corresponding columns. For example, we can ask the Iris DataFrame for its average
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+data average.
+\end{lstlisting}
+
+The response will be a DataSeries storing with average values of every quantitative column of a DataFrame and \texttt{Float nan} for all the categorical ones.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+sepal_length  5.843
+sepal_width   3.054
+petal_length  3.759
+petal_width   1.199
+species       Float nan
+\end{lstlisting}
+
 \subsection{Multivariate graphical EDA}
 \label{sec:multi-graph}
 
+According to \cite{Seltman}, the most commonly used technique of graphical EDA is a grouped barplot with each group representing one level of one of the variables and each bar within a group representing the levels of the other variable. Another useful visualization is a side-by-side boxplot. It is considered the best graphical EDA technique for examining the relationship between a categorical variable and a quantitative variable. These two visualizations are not implemented in the current release of DataFrame.
+
+Let's ask a DataFrame to show us the barplots of all the quantitative columns, aligned on the same axis. This can be useful for comparing variables among themselves.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+data boxplot.
+\end{lstlisting}
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=0.75\linewidth]{boxplot}
+  \includegraphics[width=0.9\linewidth]{boxplot}
   \end{center}
 \end{figure}
 
-Let's look at the scatterplot of two statistical variables representing the width and length of a sepal. To do that we ask our DataFrame to give us specific columns, in our case, \texttt{sepal\_width} and \texttt{sepal\_length}, then we ask these columns (the result will be another DataFrame) to visualize themselves.
+% Let's look at the scatterplot of two variables representing the width and length of a sepal. To do that we ask our DataFrame to give us specific columns, in our case, \texttt{sepal\_width} and \texttt{sepal\_length}, then we ask these columns (the result will be another DataFrame) to visualize themselves.
+%
+% \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+% (data columns: #(sepal_width sepal_length)) scatterplot.
+% \end{lstlisting}
+%
+% \begin{figure}[H]
+%   \begin{center}
+%   \includegraphics[width=0.9\linewidth]{sepal_wl_scatter}
+%   \end{center}
+% \end{figure}
 
-\begin{lstlisting}
-vars := data columns: #(sepal_width sepal_length).
-vars scatterplot.
+We can also ask for a matrix that contains all the pairwise scatterplots of the variables on a single page in a matrix format. Scatterplot matrix is a complex visualization which allows us to roughly determine if we have a linear correlation between multiple variables.
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+data scatterplotMatrixOn: #species.
 \end{lstlisting}
 
-\begin{figure}[H]
-  \begin{center}
-  \includegraphics[width=0.75\linewidth]{sepal_wl_scatter}
-  \end{center}
-\end{figure}
+Quantitative variables are plotted against each other, and the values of a given categorical variable are mapped with colors. The column names are written in a diagonal line from top left to bottom right.
 
 \begin{figure}[H]
   \begin{center}
