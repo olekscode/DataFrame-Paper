@@ -469,12 +469,16 @@ vars scatterplot.
 
 \section{Conclusion \& Future work}
 \label{sec:conclusion}
-At the time of writing this paper DataFrame is capable of...
-However, a lot of functionality is still missing. For example, we need tools for
-\begin{itemize}
-  \item data wrangling
-  \item data aggregation and grouping
-\end{itemize}
+We have introduced the \texttt{DataFrame} and \texttt{DataSeries} collections in the Pharo Collection hierarchy. These classes are specifically designed for working with structured data. We have demonstrated how these classes can be used for descriptive statistics and exploratory data analysis, such as getting the summary of a data set, detect mistakes, determine relations, and select appropriate models for further investigation. We detailed the implementation trade-offs that we are currently facing in our implementation for Pharo and exemplified our contribution through an \textit{Exploratory Data Analysis} session for the Iris Data-set, that included both univariate and multivariate (graphical and non-graphical) analyses. 
+
+In terms of future work we intend to evolve our API and implementation by investigating more complicated scenarios and data-sets, extend the usage of traits in our design and finally add support for more advanced protocols for data wrangling, aggregation and grouping.
+%
+% At the time of writing this paper DataFrame is capable of...
+% However, a lot of functionality is still missing. For example, we need tools for
+% \begin{itemize}
+%   \item data wrangling
+%   \item data aggregation and grouping
+% \end{itemize}
 
 % \section{Conclusion}
 
