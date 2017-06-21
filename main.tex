@@ -232,18 +232,17 @@ To facilitate our readers, we should note here that all figures in this paper ar
 
 \section{Exploratory Data Analysis}
 \label{sec:eda}
-\textbf{Exploratory data analysis (EDA)} is an approach to analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method of looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
+\textit{Exploratory data analysis (EDA)} is an approach for analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method for looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
 
-EDA can be particularly useful for uncovering underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting applopriate models for further analysis\cite{eStats}.
+EDA can be particularly useful for uncovering the underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting appropriate models for further analysis\cite{eStats}.
 
-By the number of variables and the ... the techniques of exploratory data analysis can be cross-classified into four types: univariate graphical, univariate non-graphical, multivariate graphical, and multivariate non-graphical.
+Depending on the number of variables involved and the input/output abstractions used, the techniques of exploratory data analysis can be classified into four categories: univariate non-graphical (Sub-section \ref{sec:uni-non}), univariate graphical (Sub-section \ref{sec:uni-graph}), multivariate graphical (Sub-section \ref{sec:multi-non}), and multivariate non-graphical (Sub-section \ref{sec:multi-non}).
 
 \section{DataSeries and DataFrame}
 \label{sec:dataframe}
-DataSeries and DataFrame are the high-level data structures that make data analysis in Pharo fast and easy.
-\cite{McKinney}
+DataFrame and DataSeries are the high-level data structures with which we intent to make data analysis in Pharo fast and easy.%\cite{McKinney}
 
-DataFrame can be loaded into a Pharo image with the following Metacello script:
+They can be loaded into a Pharo image with the following Metacello script:
 
 \begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
 Metacello new
@@ -326,6 +325,7 @@ The output will be the following table
 \end{lstlisting}
 
 \subsection{Univariate non-graphical EDA}
+\label{sec:uni-non}
 To access a single variable we ask a data frame for a specific column, using its name or number. The result will be a DataSeries object.
 
 \begin{lstlisting}[basicstyle=\small,numbers=left,language=Smalltalk,numberstyle=\tiny]
@@ -342,6 +342,7 @@ series stdev.
 \end{lstlisting}
 
 \subsection{Univariate graphical EDA}
+\label{sec:uni-graph}
 
 The only graphical technique that can be used for a categorical variable is histogram - a barplot where the hight of each bar represents the proportion (count/total count) of cases for a range of values.
 Histogram is the only graphical technique that can be used for a categorical variable.
@@ -358,9 +359,13 @@ var histogram.
 \end{figure}
 
 \subsection{Multivariate non-graphical EDA}
+\label{sec:multi-non}
+
 Multivariate non-graphical EDA shows the relationship between two variables in form of either cross-tabulation (categorical data) or statistics (quantitative data).
 
 \subsection{Multivariate graphical EDA}
+\label{sec:multi-graph}
+
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.75\linewidth]{boxplot}
