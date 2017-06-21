@@ -206,9 +206,10 @@ Provided the proper tools and open source libraries for machine learning, statis
 
 Our work is motivated by popular data-analysis techniques (such as split-apply-combine \cite{wickham2011split} and collection pipelines \cite{Fowler15}) as well as from dedicated data-structure and APIs for data-analysis environments for Python \cite{McKinney}, R \cite{team2000r}, Mathematica \cite{wolfram1999mathematica} and the .Net platform (through the LINQ embedded query language \cite{meijer2006linq}). Nevertheless our primary inspiration is drawn form Smalltalk itself and can be traced back to the extensive coverage of the Smalltalk-80 book on Collections \cite{Goldberg} (with over four chapters dedicated to the usage and design of the Collection hierarchy). As well as from more recent work from our community that refined the implementation of collections using traits \cite{black2003applying, bourgois2010bloc, scharli2003traits} and promises \cite{Alcocer16}.
 
-To facilitate our readers, we should note here that all figures in this paper are DataFrame visualizations that are created with Roassal2 and can be reproduced by the steps described in Section \ref{sec:dataframe}. The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right ?}. It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:iris-eda} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API. Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
-
-
+To facilitate our readers, we should note here that all figures in this paper are DataFrame visualizations that are created with Roassal 2\footnote{\url{http://agilevisualization.com/}} and can be reproduced by the steps described in Section \ref{sec:dataframe}.
+The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right ?}.
+It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:iris-eda} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API.
+Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
 
 
 % \section{Problem Description}
@@ -232,7 +233,8 @@ To facilitate our readers, we should note here that all figures in this paper ar
 
 \section{Exploratory Data Analysis}
 \label{sec:eda}
-\textit{Exploratory data analysis (EDA)} is an approach for analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties. According to Howard J. Seltmanan, any method for looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
+\textit{Exploratory data analysis (EDA)} is an approach for analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties.
+According to Howard J. Seltman, any method for looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It is an important first step of data analysis which helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
 
 EDA can be particularly useful for uncovering the underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting appropriate models for further analysis\cite{eStats}.
 
@@ -277,7 +279,7 @@ df:=DataFrame
      columns: #((John Jane)(25 21)(true false)).
 \end{lstlisting}
 
-Those two line produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
+Those two lines produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 df columnNames: #(Name Age IsMarried).
