@@ -314,7 +314,7 @@ Finally functionalities such as the head/tail protocol or the protocol allowing 
 % But in general do not mix solution and discussions/possible variation
 % let that for discussion
 
-In order to exemplify a real use-case of our library, we will start by loading the Iris dataset \footnote{\url{https://en.wikipedia.org/wiki/Iris_flower_data_set}} from a CSV file.
+In order to exemplify a real use-case of our library, we will start by loading the Iris dataset\footnote{\url{https://en.wikipedia.org/wiki/Iris_flower_data_set}} from a CSV file.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data := DataFrame fromCsv: '/path/to/iris.csv'.
@@ -345,7 +345,8 @@ The first two messages were sent to a DataFrame. It will respond with another Da
 5   (5 3.6 1.4 0.2 #setosa)
 \end{lstlisting}
 
-When asked for a column named \texttt{sepal\_length}, DataFrame responds with a DataSeries object (how this object is constructed depends on the implementation and should not concern the user). Therefore, the second two messages are sent to a DataSeries which responds with another DataSeries containing all the requested element. The output of \texttt{(data column: \#sepal\_length) head} should look like this:
+When asked for a column named \texttt{sepal\_length}, DataFrame responds with a DataSeries object (how this object is constructed depends on the implementation and should not concern the user). Therefore, the second two messages are sent to a DataSeries which responds with another DataSeries containing all the requested elements.
+The output of \texttt{(data column: \#sepal\_length) head} should look like this:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 sepal_length
@@ -362,7 +363,7 @@ First line holds the name of a series. The numbers in the following five lines a
 data row: 1.
 \end{lstlisting}
 
-The DataSeries received as a responce will store the column name of each value in that row as a corresponding key. And the key of the row (1 is a row name or a key of the first row in our DataFrame, not the numeric index like in Array) will be stored as the name of a DataSeries
+The DataSeries received as a responce will store the column name of each value in that row as a corresponding key. And the key of the row (1 is a row name or a key of the first row in our DataFrame, not the numeric index like in Array) will be stored as the name of a DataSeries.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 1
@@ -376,7 +377,7 @@ species       5
 \subsection{Univariate non-graphical EDA}
 \label{sec:uni-non}
 
-DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines return the same \texttt{sepal\_width} column
+DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines return the same \texttt{sepal\_width} column:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data column: #sepal_width.
@@ -454,7 +455,7 @@ Multivariate non-graphical EDA shows the relationship between two variables in f
 To get multiple columns from a DataFrame we can give it an array of column names or numbers, or ask for all the columns in a given range, specified by two numbers. The response to any of these messages will also be a DataFrame, and the order of columns will be the same as requested.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-data columns: #(petal_length sepal_width sepal_lenght).
+data columns: #(petal_length sepal_width sepal_length).
 data columns: #(3 2 1).
 data columnsFrom: 3 to: 1.
 \end{lstlisting}
