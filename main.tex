@@ -18,6 +18,16 @@
 \usepackage{cite}
 \usepackage[pdftex,colorlinks=true,pdfstartview=FitV,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{xspace}
+%\newcommand*{\eg}{e.g.\@\xspace}
+%\newcommand*{\ie}{i.e.\@\xspace}
+
+\makeatletter
+\newcommand*{\etc}{%
+    \@ifnextchar{.}%
+        {etc}%
+        {etc.\@\xspace}%
+}
+\makeatother
 
 \usepackage{float}
 % \usepackage{xcolor}
@@ -82,10 +92,9 @@
 % We propose this solution...
 % Our solution solves P in such and such way.
 
-\noindent Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for dynamic environments such as Pharo. Despite the fact that many important tools for data-analysis are already implemented in PolyMath, we are still missing. 
-
-\noindent The simplicity and power of Smalltalk combined with a live environment provided by Pharo creates a perfect environment for data analysis. The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm. Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both powerful tool for professional data analysts, and a simple environment for everyone who wants to play with a data set. Many important tools and algorithms are already implemented in PolyMath. But the essential part of data analysis toolkit is missing - the specialized data structures for tabular data sets with a simple and powerful API for summarizing, cleaning, and manipulating the data. In this paper I introduce \texttt{DataFrame} and \texttt{DataSeries} - the new collections specifically designed for working with structured data. I demonstrate how these tools can be used for descriptive statistics and the exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis.
+\noindent Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for interactive exploration environments. In Smalltalk despite the fact that many important analysis tools are already present (for \eg in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the \texttt{DataFrame} and \texttt{DataSeries} collections - that are specifically designed for working with structured data. We demonstrate how these tools can be used for descriptive statistics and exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis. We then detail the implementation trade-offs that we are currently facing in our implementation for Pharo and discuss future perspectives.
 \end{abstract}
+
 
 \begin{multicols}{2}
 \section{Introduction}
@@ -102,9 +111,13 @@
 %
 % Contribution of the paper
 
-All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in section \
+The simplicity and power of Smalltalk combined with the live environment of Pharo creates a productive combination for data analysis. 
+% The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm.
+Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both a powerful tool for professional data analysts, and a simple environment for everyone who wants to experiment with a simple data set. Many important tools and algorithms are already implemented in libraries such as PolyMath, but we are still missing essential data-structures for tabular data and a fluent API for advanced data-analysis techniques. To overcome this problem we introduce in this paper the \texttt{DataFrame} and \texttt{DataSeries} collections for working with structured data, and through several examples, we demonstrate how these tools can be used for descriptive statistics and exploratory data analysis allowing us to get the summaries of data sets, detect mistakes, determine relations, and select the appropriate models for further analysis.
 
-\paragraph{Paper structure} In the first section I provide a brief introduction into the explanatory data analysis. What is it good for? How to do it right? I will also provide you with all the basic knowledge about statistics and data analysis, such as statistical variable, types of variables etc. In the second section I briefly describe the DataFrame - new data structure for data analysis. In the following section I will give a step-by-step example of how to perform EDA on the well-known Iris data set.
+All pictures in this paper are the built-in DataFrame visualizations that are created with Roassal2 and can be reproduced by following the steps in Section \ref{sec:dataframe}
+
+The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following questions: \textit{What is EDA good for and how to do it right ?}. It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame collections for structured data. Section \ref{sec:contribution} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API. Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
 
 
 
@@ -269,7 +282,8 @@ vars scatterplot.
 % Other solutions in the domain, and a real comparison of our contribution with
 % solutions from other people.
 
-\section{Future work}
+\section{Conclusion \& Future work}
+\label{sec:conclusion}
 At the time of writing this paper DataFrame is capable of...
 However, a lot of functionality is still missing. For example, we need tools for
 \begin{itemize}
@@ -277,8 +291,8 @@ However, a lot of functionality is still missing. For example, we need tools for
   \item data aggregation and grouping
 \end{itemize}
 
-\section{Conclusion}
-\label{sec:conclusion}
+% \section{Conclusion}
+
 
 % In this paper, we \textsf{looked}\xspace at problem P with this context and these
 % constraints. We proposed solution S. It has such good points and such not so
