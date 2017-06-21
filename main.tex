@@ -182,6 +182,14 @@ Those two line produce exactly the same DataFrame. Once again, the names (key va
 \begin{code}{}
 df columnNames: #(Name Age IsMarried).
 \end{code}
+
+\subsection{DataFrame Internals}
+Internally DataSeries and DataFrame are implemented as subclasses of OrderedDictionary. This way they support the key/value/association interface of a Dictionary and preserves the key insertion order. This is the fourth iteration of a model. Previously the data structures were implemented as subclasses of Dictionary or Array. Both approaches have proved to be ineffective, because an Array can not have variable size and Dictionary stores its elements in an unordered manner and uses the hashing technique to locate them\cite{Goldberg}. The model is evolving according to the needs, so while this implementation works fine on small datasets (like Iris or Housing data), it might prove to be useless when dealing with massive datasets. For that reason in future iterations we might consider reusing the internal structure of pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays\cite{McKinney}.
+
+Another important thing about the implementation of DataFrame collections is the use of composition instead of inheritance. The problem is that DataSeries (one-dimensional) and DataFrame (two-dimensional) are classes of different nature that may require the entirely different intertal implementation. Nevertheless, we want them to be polymorphic and respond to the same messages (many of these messges will also have the same implementation). One way of achieving polymorphic behavior and code reuse without using inheritance is the composition reuse principle. In Pharo this can be done using the Traits instrument.
+
+At this point the head/tail functionality and the method that allows us to change keys of a data structure are implemented as traits. In future iterations, the data visualization, aggregation, and many other maethods that should be shared by DataSeries and DataFrame are also likely to be implemented as traits. Here is an example of how both DataSeries and DataFrame respond to a \texttt{head} message: "take first 5 elements from a collection, construct a collection of the same type with these elements, and return it". For a DataFrame these 5 elements will be rows of data (regardless of the internal implementation, the \texttt{at:} message should return a row as a single observation and a logical unit of a DataFrame). For DataSeries, these will be the atomic values.
+
 %\section{Proposed Solution}%
 \section{Exploring Iris Data Set}
 \label{sec:contribution}
