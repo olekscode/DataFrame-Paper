@@ -96,14 +96,14 @@
 %\authornote{Dr.~Trovato insisted his name be first.}
 %\orcid{1234-5678-9012}
 \affiliation{%
-  \institution{Ivan Franko National University of Lviv\\
-  Faculty of Applied Mathematics and Informatics, Ukraine}
+  \institution{Ukrainian Catholic University\\
+  Faculty of Applied Sciences}
   % \streetaddress{P.O. Box 1212}
-  % \city{Dublin}
-  % \state{Ohio}
+  \city{Lviv}
+  \state{Ukraine}
   % \postcode{43017-6221}
 }
-\email{olk.zaytsev@gmail.com}
+\email{oleks@ucu.edu.ua}
 
 \author{Nick Papoulias}
 %\authornote{Dr.~Trovato insisted his name be first.}
@@ -145,7 +145,7 @@
 % We propose this solution...
 % Our solution solves P in such and such way.
 
-Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for interactive exploration environments. In Smalltalk despite the fact that many important analysis tools are already present (for \eg in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the \texttt{DataFrame} and \texttt{DataSeries} collections - that are specifically designed for working with structured data. We demonstrate how these tools can be used for descriptive statistics and exploratory data analysis - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis. We then detail the implementation trade-offs that we are currently facing in our implementation for Pharo and discuss future perspectives.
+Data analysis and visualizations techniques (such as split-apply-combine) make extensive use of associative tabular data-structures that are cumbersome to use with common aggregation APIs (for arrays, lists or dictionaries). In these cases a fluent API for querying associative tabular data (like the ones provided by Pandas, Mathematica or LINQ) is more appropriate for interactive exploration environments. In Smalltalk despite the fact that many important analysis tools are already present (for \eg in the PolyMath library), we are still missing this essential part of the data science toolkit. These specialized data structures for tabular data sets can provide us with a simple and powerful API for summarizing, cleaning, and manipulating a wealth of data-sources that are currently cumbersome to use. In this paper we introduce the \texttt{DataFrame} and \texttt{DataSeries} collections - that are specifically designed for working with structured data. We demonstrate how these tools can be used for descriptive statistics and Exploratory Data Analysis (EDA) - the critical first step of data analysis which allows us to get the summary of a data set, detect mistakes, determine the relations, and select the appropriate model for further confirmatory analysis. We then detail the implementation trade-offs that we are currently facing in our implementation for Pharo and discuss future perspectives.
 \end{abstract}
 
 
@@ -204,11 +204,10 @@ The simplicity and power of Smalltalk combined with the live environment of Phar
 % The advanced debugging and inspecting tools together with the library for agile visualizations allow us to communicate and play with every object in our system. This includes all the logical components of both data and the algorithm.
 Provided the proper tools and open source libraries for machine learning, statistics, and optimization, Pharo can become both a powerful tool for professional data analysts, and a simple environment for everyone who wants to experiment with a simple data set. Many important tools and algorithms are already implemented in libraries such as PolyMath\footnote{\url{https://github.com/PolyMathOrg/PolyMath}}, but we are still missing essential data-structures and a fluent API for advanced data-analysis techniques. To overcome this problem we introduce in this paper the \texttt{DataFrame} and \texttt{DataSeries} collections for working with structured data, and through several examples demonstrate how these tools can be used for descriptive statistics and exploratory data analysis allowing us to get the summaries of data sets, detect mistakes, determine relations, and select the appropriate models for further analysis.
 
-Our work is motivated by popular data-analysis techniques (such as split-apply-combine \cite{wickham2011split} and collection pipelines \cite{Fowler15}) as well as from dedicated data-structure and APIs for data-analysis environments for Python \cite{McKinney}, R \cite{team2000r}, Mathematica \cite{wolfram1999mathematica} and the .Net platform (through the LINQ embedded query language \cite{meijer2006linq}). Nevertheless our primary inspiration is drawn from Smalltalk itself and can be traced back to the extensive coverage of the Smalltalk-80 book on Collections \cite{Goldberg} (with over four chapters dedicated to the usage and design of the Collection hierarchy). As well as from more recent work from our community that refined the implementation of collections using traits \cite{black2003applying, bourgois2010bloc, scharli2003traits} and promises \cite{Alcocer16}.
+Our work is motivated by popular data-analysis techniques (such as split-apply-combine \cite{wickham2011split} and collection pipelines \cite{Fowler15}) as well as from dedicated data-structure and APIs for data-analysis environments for Python \cite{McKinney}, R \cite{team2000r}, Mathematica \cite{wolfram1999mathematica} and the .Net platform (through the LINQ embedded query language \cite{meijer2006linq}). Nevertheless our primary inspiration is drawn from Smalltalk itself and can be traced back to the extensive coverage of the Smalltalk-80 book on Collections \cite{Goldberg} (with over four chapters dedicated to the usage and design of the Collection hierarchy), as well as from more recent work from our community that refined the implementation of collections using traits \cite{black2003applying, bourgois2010bloc, scharli2003traits} and promises \cite{Alcocer16}.
 
 To facilitate our readers, we should note here that all figures in this paper are DataFrame visualizations that are created with Roassal2\footnote{\url{http://agilevisualization.com/}} and can be reproduced by the steps described in Section \ref{sec:dataframe}.
-The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right?}
-It also provides basic knowledge about statistics and data analysis, such as: statistical variables, types of variables \etc. Then Section \ref{sec:dataframe} details the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:iris-eda} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API.
+The rest of this paper is structured as follows: Section \ref{sec:eda} provides a brief introduction into explanatory data analysis, answering the following question: \textit{What is EDA good for and how to do it right?}. Then Section \ref{sec:dataframe} describes the new DataSeries and DataFrame Collections for structured data. Section \ref{sec:iris-eda} gives a step-by-step example of how to perform EDA on the well-known Iris data set using the new collections and API.
 Finally Section \ref{sec:conclusion} concludes the paper and discusses implementation trade-offs as well as future perspectives.
 
 
@@ -233,12 +232,12 @@ Finally Section \ref{sec:conclusion} concludes the paper and discusses implement
 
 \section{Exploratory Data Analysis}
 \label{sec:eda}
-\textit{Exploratory data analysis (EDA)} is an approach for analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties.
-According to Howard J. Seltman, any method for looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis \cite{Seltman}. It helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
+\textit{Exploratory data analysis} is an approach for analyzing data sets to summarize their main characteristics. It allows us to make some sense of the data by visualizing it and exploring its statistical properties.
+According to \cite{Seltman}, "any method of looking at data that does not include formal statistical modeling and inference falls under the term exploratory data analysis". It helps us to select the model that we will be fitting to the data during the following steps of confirmatory data analysis.
 
 EDA can be particularly useful for uncovering the underlying structure of a dataset, detecting outliers and anomalies, determining relationships among the explanatory variables, assessing the direction and rough size of relationships between explanatory and outcome variables, and selecting appropriate models for further analysis\cite{eStats}.
 
-The techniques of exploratory data analysis can be classified into four categories: univariate non-graphical (Sub-section \ref{sec:uni-non}), univariate graphical (Sub-section \ref{sec:uni-graph}), multivariate non-graphical (Sub-section \ref{sec:multi-non}) and multivariate graphical (Sub-section \ref{sec:multi-graph}).
+Howard J. Seltman \cite{Seltman} classifies the techniques of exploratory data analysis into four categories: univariate non-graphical (Sub-section \ref{sec:uni-non}), univariate graphical (Sub-section \ref{sec:uni-graph}), multivariate non-graphical (Sub-section \ref{sec:multi-non}) and multivariate graphical (Sub-section \ref{sec:multi-graph}).
 
 \section{DataSeries and DataFrame}
 \label{sec:dataframe}
@@ -253,7 +252,7 @@ Metacello new
     load.
 \end{lstlisting}
 
-\textbf{A DataSeries} can be seen as an Ordered Collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
+\textbf{A DataSeries} can be seen as an sequenceable collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
 
 The easiest way of to create a series is by converting an array: 
 
@@ -285,7 +284,7 @@ Those two lines produce exactly the same DataFrame. Once again, the names (key v
 df columnNames: #(Name Age IsMarried).
 \end{lstlisting}
 
-\subsection{Discussion: DataFrame Internals}
+\subsection*{Discussion: DataFrame Internals}
 \label{sec:internals}
 
 Before continuing with a detailed example on how to use these classes 
@@ -293,7 +292,7 @@ for data exploration, we would like to share our thoughts on their implementatio
 
 Our goal for these classes is to fully encapsulate their internal structure so that it is both easy to experiment with optimized  representations, but also allow for a polymorphic fluent API that can be implemented separately without breaking existing code. 
 
-This is why we are evolving the API and the implementation according to concrete needs we are facing while analyzing specific data-sets (like the Iris or Housing data-sets that we will shortly discuss). We are currently in the fourth iteration of the model, since there are many trade-offs to consider, between for \eg using inheritance, instance composition and/or trait composition for the implementation. Even inheriting directly for \eg from Array, Dictionary or OrdreredDictionary comes with its own set of trade-offs. In the future we might consider reusing the internal structure of the pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays \cite{McKinney}. 
+This is why we are evolving the API and the implementation according to concrete needs we are facing while analyzing specific data-sets (like the Iris or Housing data-sets that we will shortly discuss). We are currently in the fourth iteration of the model, since there are many trade-offs to consider, between for \eg using inheritance, instance composition and/or trait composition for the implementation. Even inheriting directly for \eg from Array, Dictionary or OrderedDictionary comes with its own set of trade-offs. In the future we might consider reusing the internal structure of the pandas DataFrame in which the data is stored as one or more two-dimensional blocks rather than a collection of one-dimensional arrays \cite{McKinney}. 
 
 Finally functionalities such as the head/tail protocol or the protocol allowing us to change the keys of a data structure are all currently implemented as traits. In future iterations, we expect to extend the use of traits to include the data visualization and aggregation protocols, that should be shared among the DataSeries and DataFrame classes. 
 %
@@ -338,23 +337,24 @@ data tail: 3.
 The first two messages were sent to a DataFrame. It will respond with another DataFrame object containing the requested rows. Here is the example output of the \texttt{data head} message.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-1   (5.1 3.5 1.4 0.2 #setosa)
-2   (4.9 3 1.4 0.2 #setosa)
-3   (4.7 3.2 1.3 0.2 #setosa)
-4   (4.6 3.1 1.5 0.2 #setosa)
-5   (5 3.6 1.4 0.2 #setosa)
+1 | 5.1  3.5  1.4  0.2  #setosa
+2 | 4.9    3  1.4  0.2  #setosa
+3 | 4.7  3.2  1.3  0.2  #setosa
+4 | 4.6  3.1  1.5  0.2  #setosa
+5 |   5  3.6  1.4  0.2  #setosa
 \end{lstlisting}
 
 When asked for a column named \texttt{sepal\_length}, DataFrame responds with a DataSeries object (how this object is constructed depends on the implementation and should not concern the user). Therefore, the second two messages are sent to a DataSeries which responds with another DataSeries containing all the requested elements.
 The output of \texttt{(data column: \#sepal\_length) head} should look like this:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-sepal_length
-1   5.1
-2   4.9
-3   4.7
-4   4.6
-5   5
+  | sepal_length
+--+-------------
+1 |          5.1
+2 |          4.9
+3 |          4.7
+4 |          4.6
+5 |            5
 \end{lstlisting}
 
 First line holds the name of a series. The numbers in the following five lines are the key-value pairs. It is important that whenever a row or column is extracted from a DataFrame, it remembers all the key values (they are also called indices). So, for example, if we ask a DataFrame for its first row
@@ -363,15 +363,16 @@ First line holds the name of a series. The numbers in the following five lines a
 data row: 1.
 \end{lstlisting}
 
-The DataSeries received as a responce will store the column name of each value in that row as a corresponding key. And the key of the row (1 is a row name or a key of the first row in our DataFrame, not the numeric index like in Array) will be stored as the name of a DataSeries.
+The DataSeries received as a response will store the column name of each value in that row as a corresponding key. And the key of the row (1 is a row name or a key of the first row in our DataFrame, not the numeric index like in Array) will be stored as the name of a DataSeries.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-1
-sepal_length  5.1
-sepal_width   4.9
-petal_length  4.7 
-petal_width   4.6
-species       5 
+             |   1
+-------------+----        
+sepal_length | 5.1
+sepal_width  | 4.9
+petal_length | 4.7 
+petal_width  | 4.6
+species      |   5 
 \end{lstlisting}
 
 \subsection{Univariate non-graphical EDA}
@@ -399,9 +400,11 @@ Now we can tabulate this variable:
 The response will be the following DataFrame. The first column (row names) holds the unique categories, the second column - the number of occurences of each category, and the third one shows the fraction of data that belongs to each category. We can see that the sample data is evenly distributed among three categories.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-setosa      50  (1/3)
-versicolor   50  (1/3)
-virginica    50  (1/3)
+            |  Count  Proportion  
+------------+-------------------
+    setosa  |     50       (1/3)  
+versicolor  |     50       (1/3)  
+ virginica  |     50       (1/3)  
 \end{lstlisting}
 
 If the variable is quantitative, we can summarize it with the following statistics: \texttt{min, max, range, average, median, mode, stdev, variance}
@@ -424,9 +427,11 @@ The only graphical technique that can be used for a categorical variable is hist
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.75\linewidth]{species_bar}
+  \caption{Barplot of a categorical species column}
   \end{center}
   \begin{center}
   \includegraphics[width=0.8\linewidth]{sepal_width_bar}
+  \caption{Barplot of a quantitative sepal width column}
   \end{center}
 \end{figure}
 
@@ -444,6 +449,7 @@ Quantitative variables can be visualized in many different ways: \texttt{plot, s
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.8\linewidth]{petal_width_scatter}
+  \caption{Scatterplot of a petal width column}
   \end{center}
 \end{figure}
 
@@ -456,11 +462,11 @@ To get multiple columns from a DataFrame we can give it an array of column names
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data columns: #(petal_length sepal_width sepal_length).
-data columns: #(3 2 1).
+data columnsAt: #(3 2 1).
 data columnsFrom: 3 to: 1.
 \end{lstlisting}
 
-When asked for a value of certain statistical measure, DataFrame will answer a DataSeries of the same size as one of its rows, with keys equal to the column names and the values of that stitistics applied to the corresponding columns. For example, we can ask the Iris DataFrame for its average
+When asked for a value of certain statistical measure, DataFrame will answer a DataSeries of the same size as one of its rows, with keys equal to the column names and the values of that statistics applied to the corresponding columns. For example, we can ask the Iris DataFrame for its average
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data average.
@@ -469,11 +475,11 @@ data average.
 The response will be a DataSeries storing with average values of every quantitative column of a DataFrame and \texttt{Float nan} for all the categorical ones.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-sepal_length  5.843
-sepal_width   3.054
-petal_length  3.759
-petal_width   1.199
-species       Float nan
+sepal_length |     5.843
+sepal_width  |     3.054
+petal_length |     3.759
+petal_width  |     1.199
+species      | Float nan
 \end{lstlisting}
 
 \subsection{Multivariate graphical EDA}
@@ -481,7 +487,7 @@ species       Float nan
 
 According to \cite{Seltman}, the most commonly used technique of graphical EDA is a grouped barplot with each group representing one level of one of the variables and each bar within a group representing the levels of the other variable. Another useful visualization is a side-by-side boxplot. It is considered the best graphical EDA technique for examining the relationship between a categorical variable and a quantitative variable. These two visualizations are not present in the current release, but are to be integrated in a future version of DataFrame.
 
-Let's ask a DataFrame to show us the barplots of all the quantitative columns, aligned on the same axis. This can be useful for comparing variables among themselves.
+We can ask DataFrame to show us the barplots of all the quantitative columns, aligned on the same axis. This can be useful for comparing variables among themselves.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data boxplot.
@@ -489,6 +495,7 @@ data boxplot.
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.9\linewidth]{boxplot}
+  \caption{Boxplots of all the quantitative columns of a data frame. Left to right: sepal length, sepal width, petal length, petal width}
   \end{center}
 \end{figure}
 
@@ -515,6 +522,7 @@ Quantitative variables are plotted against each other, and the values of a given
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=\linewidth]{scatterplot_matrix}
+  \caption{Scatterplot matrix of Iris dataset}
   \end{center}
 \end{figure}
 
