@@ -2,4 +2,4 @@
 
 My IWST 2017 paper on the exploratory data analysis in Pharo
 
-![DataFrame visualizations with Roassal2](figures/all_plots.png)
+![DataFrame visualizations with Roassal2](images/all_plots.png)
