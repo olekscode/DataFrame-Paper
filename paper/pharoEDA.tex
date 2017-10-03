@@ -97,7 +97,8 @@
 %\orcid{1234-5678-9012}
 \affiliation{%
   \institution{Ukrainian Catholic University\\
-  Faculty of Applied Sciences}
+  Faculty of Applied Sciences\\
+  Lviv, Ukraine}
   % \streetaddress{P.O. Box 1212}
   \city{Lviv}
   \state{Ukraine}
@@ -123,9 +124,8 @@ IRD, Sorbonne Universités, UPMC Univ Paris 06, Unité Mixte Internationale de M
 %\authornote{Dr.~Trovato insisted his name be first.}
 %\orcid{1234-5678-9012}
 \affiliation{%
-  \institution{UMMISCO IRD France Nord, Bondy\\
-  Sorbonne Universités UPMC, Univ. Paris 06, France\\
-   Université de Caen Normandie, Caen}
+  \institution{
+IRD, Sorbonne Universités, UPMC Univ Paris 06, Unité Mixte Internationale de Modélisation Mathématique et Informatiques des Systèmes Complexes (UMMISCO), Bondy, France\\Université de Caen Normandie, Caen, France}
   % \streetaddress{P.O. Box 1212}
   % \city{Dublin}
   % \state{Ohio}
@@ -243,6 +243,16 @@ Howard J. Seltman \cite{Seltman} classifies the techniques of exploratory data a
 \label{sec:dataframe}
 DataFrame and DataSeries\footnote{The source code of DataFrame, the tutorial, and the instructions for loading it into a Pharo image can be found here: \url{https://github.com/PolyMathOrg/DataFrame}} are the high-level data structures with which we intend to make data analysis in Pharo fast and easy.%\cite{McKinney}
 
+They can be loaded into a Pharo image with the following Metacello script:
+
+\begin{lstlisting}[basicstyle=\small,language=Smalltalk]
+Metacello new
+    baseline: 'DataFrame';
+    repository: 'github://PolyMathOrg/DataFrame';
+    load.
+    
+\end{lstlisting}
+
 \textbf{A DataSeries} can be seen as an sequenceable collection that combines the properties of an Array and a Dictionary, while extending the functionality of both. Every DataSeries has a name and contains an array of data mapped to a corresponding array of keys (that are used as index values).
 
 The easiest way of to create a series is by converting an array: 
@@ -263,13 +273,20 @@ series keys: #(r1 r2 r3).
 A simple DataFrame can be created from an array of rows or columns.
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
-df:=DataFrame 
-     rows: #((John 25 true)(Jane 21 false)).
-df:=DataFrame 
-     columns: #((John Jane)(25 21)(true false)).
+df:=DataFrame rows:
+      #((John 25 true)
+        (Jane 21 false)).
+        
+df:=DataFrame columns:
+      #((John Jane)
+        (25 21)
+        (true false)).
+        
 \end{lstlisting}
 
-Those two lines produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns. These names can be changed later:
+Those two lines produce exactly the same DataFrame. Once again, the names (key values) of both rows and columns were not explicitly specified, so by default they will set to numerical indices: \#(1 2) for rows and \#(1 2 3) for columns.
+
+The names of rows and columns can be changed later:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 df columnNames: #(Name Age IsMarried).
@@ -369,7 +386,9 @@ species      |   5
 \subsection{Univariate non-graphical EDA}
 \label{sec:uni-non}
 
-DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number. The following two lines return the same \texttt{sepal\_width} column:
+DataFrame can be viewed as a collection of statistical variables (columns). As demonstrated in \ref{sec:iris-eda}, we can ask DataFrame for a single column by its name. Since the rows and columns of a DataFrame are ordered, we can also access a column by its number.
+
+\paragraph{}The following two lines return the same \texttt{sepal\_width} column:
 
 \begin{lstlisting}[basicstyle=\small,language=Smalltalk]
 data column: #sepal_width.
@@ -485,7 +504,7 @@ data boxplot.
 \end{lstlisting}
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=0.9\linewidth]{boxplot}
+  \includegraphics[width=0.8\linewidth]{boxplot}
   \caption{Boxplots of all the quantitative columns of a data frame. Left to right: sepal length, sepal width, petal length, petal width}
   \end{center}
 \end{figure}
@@ -512,7 +531,7 @@ Quantitative variables are plotted against each other, and the values of a given
 
 \begin{figure}[H]
   \begin{center}
-  \includegraphics[width=\linewidth]{scatterplot_matrix}
+  \includegraphics[width=0.9\linewidth]{scatterplot_matrix}
   \caption{Scatterplot matrix of Iris dataset}
   \end{center}
 \end{figure}
